@@ -87,8 +87,14 @@ off-stage. The slot table — rotation, scale, x/y offset, z-index — is the sa
 geometry as the reference; the difference is that JS only ever writes a `transform`
 string and the easing lives in a CSS transition, so there is no animation library.
 
-- Entering cards are placed off-stage with `.fan__card--instant` (transition
-  suppressed), flushed with a forced reflow, then released so the move animates.
+- **Click any plate to bring it to the front.** Plates are focusable (`role="button"`,
+  Enter/Space), and `go()` picks the shortest way round the ring.
+- **Edges cross-fade, they do not fly.** A leaving plate fades out where it stands and
+  an arriving one fades up at its destination — both use `.fan__card--instant`
+  (transition suppressed) plus a forced reflow to set the start state without animating
+  into it.
+- Each slot carries its own opacity (`o`), falling from 1 at centre to 0.55 at the
+  edges, so the fan softens outward instead of ending on a hard card.
 - Hovering lifts a card and pushes its neighbours apart. **The reference's 8rem push
   tears this fan in two** — our cards are narrower relative to their spread, so it is
   dialled to 3rem. Retune this if you change card width or the x offsets.
@@ -96,6 +102,8 @@ string and the easing lives in a CSS transition, so there is no animation librar
   the section's `overflow: hidden`, which is intentional.
 - Plate width and the slot x-offsets move together. Widen the cards without pulling the
   offsets in and the fan spreads instead of stacking.
+- Outer plates are ~22% pointer-reachable — the rest is under their neighbours, which is
+  what a tight fan should do. Their exposed edge is the hit area.
 
 **Residence slider** (`#residences`). Tabs filter by status, the track is CSS
 scroll-snap, dots and arrows drive `scrollTo`, and a scroll listener keeps the dots

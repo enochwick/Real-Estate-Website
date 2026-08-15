@@ -190,13 +190,13 @@
     const HALF = 3;
     // rot / scale / x(rem) / y(rem) / z-index, centre outwards.
     const SLOTS = [
-      { rot: -21, scale: 0.800, x: -18.5, y: 5.4, z: 1 },
-      { rot: -14, scale: 0.868, x: -13.5, y: 3.0, z: 2 },
-      { rot:  -7, scale: 0.944, x:  -6.8, y: 1.0, z: 3 },
-      { rot:   0, scale: 1.000, x:    0,  y: 0.0, z: 10 },
-      { rot:   7, scale: 0.944, x:   6.8, y: 1.0, z: 3 },
-      { rot:  14, scale: 0.868, x:  13.5, y: 3.0, z: 2 },
-      { rot:  21, scale: 0.800, x:  18.5, y: 5.4, z: 1 },
+      { rot: -21, scale: 0.800, x: -18.5, y: 5.4, z: 1,  o: 0.55 },
+      { rot: -14, scale: 0.868, x: -13.5, y: 3.0, z: 2,  o: 0.8 },
+      { rot:  -7, scale: 0.944, x:  -6.8, y: 1.0, z: 3,  o: 0.95 },
+      { rot:   0, scale: 1.000, x:    0,  y: 0.0, z: 10, o: 1 },
+      { rot:   7, scale: 0.944, x:   6.8, y: 1.0, z: 3,  o: 0.95 },
+      { rot:  14, scale: 0.868, x:  13.5, y: 3.0, z: 2,  o: 0.8 },
+      { rot:  21, scale: 0.800, x:  18.5, y: 5.4, z: 1,  o: 0.55 },
     ];
 
     const total = PLATES.length;
@@ -218,12 +218,15 @@
       const centre = total >> 1;
       const d = total > 1 ? (slot - centre) / centre : 0;
       const a = Math.abs(d);
-      return { rot: d * 21, scale: 1 - 0.2 * a * a, x: d * 18.5, y: a * a * 5.4, z: 10 - Math.abs(slot - centre) };
+      return { rot: d * 21, scale: 1 - 0.2 * a * a, x: d * 18.5, y: a * a * 5.4, z: 10 - Math.abs(slot - centre), o: 1 - 0.45 * a * a };
     };
 
     const cards = PLATES.map(([src, alt]) => {
       const el = document.createElement('div');
       el.className = 'fan__card';
+      el.tabIndex = 0;
+      el.setAttribute('role', 'button');
+      el.setAttribute('aria-label', `Bring ${alt} to the front`);
       const img = new Image();
       img.src = src;
       img.alt = alt;
@@ -296,26 +299,34 @@
             rot += slot < hovered ? -3 / (d + 1) : 3 / (d + 1);
           }
         }
-        place(cards[i], { x, y, rot, scale, z: base.z, opacity: 1 }, first);
+        place(cards[i], { x, y, rot, scale, z: base.z, opacity: base.o ?? 1 }, first);
       });
     };
 
     function go(next) {
-      const dir = next > centre || (centre === total - 1 && next === 0) ? 1 : -1;
-      centre = ((next % total) + total) % total;
+      const target = ((next % total) + total) % total;
+      if (target === centre) return;
+      centre = target;
       const nextVisible = visibleMap(centre);
       const m = spread();
 
-      // Anything leaving flies out the opposite way.
+      // Cards at the edges cross-fade in place — nothing flies off-stage.
       visible.forEach((slot, i) => {
         if (nextVisible.has(i)) return;
-        place(cards[i], { x: dir > 0 ? -40 * m : 40 * m, y: 0, rot: dir > 0 ? -30 : 30, scale: 0.5, z: 0, opacity: 0 }, false);
+        const base = slotAt(slot);
+        place(cards[i], {
+          x: base.x * m, y: base.y, rot: base.rot,
+          scale: base.scale * 0.96, z: 0, opacity: 0,
+        }, false);
       });
-      // Anything arriving is parked off-stage, then animated in.
+      // Arrivals are placed at their destination invisible, then faded up.
       nextVisible.forEach((slot, i) => {
         if (visible.has(i)) return;
         const base = slotAt(slot);
-        place(cards[i], { x: dir > 0 ? 40 * m : -40 * m, y: base.y, rot: dir > 0 ? 30 : -30, scale: 0.5, z: base.z, opacity: 0 }, true);
+        place(cards[i], {
+          x: base.x * m, y: base.y, rot: base.rot,
+          scale: base.scale * 0.96, z: base.z, opacity: 0,
+        }, true);
       });
 
       visible = nextVisible;
@@ -330,6 +341,13 @@
         if (slot === undefined || reduced) return;
         hovered = slot;
         layout(false);
+      });
+      // Click any visible plate to bring it to the front.
+      el.addEventListener('click', () => { if (visible.has(i)) go(i); });
+      el.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        e.preventDefault();
+        if (visible.has(i)) go(i);
       });
     });
     fanLayout.addEventListener('mouseleave', () => {
