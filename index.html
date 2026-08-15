@@ -40,6 +40,7 @@
       <canvas class="stage__canvas" id="heroCanvas" aria-hidden="true"></canvas>
       <img class="stage__poster" src="images/poster.webp" alt="An open-plan kitchen and living room on a high floor, floor-to-ceiling windows onto a harbour skyline at sunset.">
       <div class="stage__scrim" aria-hidden="true"></div>
+      <div class="stage__fade" aria-hidden="true"></div>
 
       <div class="stage__copy">
         <article class="beat is-active" data-beat="0">
@@ -139,8 +140,10 @@
               <p class="slide__meta">Residence 41A · West</p>
               <h3 class="slide__title">The Corner Living</h3>
               <p class="slide__price">$4,250,000 <span>· 3 bed · 2,140 sq ft</span></p>
-              <button class="slide__btn" type="button">View residence</button>
-              <button class="slide__ask" type="button" data-ask="41A"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.6 9.6 0 0 1-2.6-.4L3 21l1.6-4.2A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg> Ask this residence</button>
+              <div class="slide__actions">
+                <button class="slide__btn" type="button">View residence</button>
+                <button class="slide__ask" type="button" data-ask="41A"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.6 9.6 0 0 1-2.6-.4L3 21l1.6-4.2A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg> Ask this residence</button>
+              </div>
             </div>
           </article>
 
@@ -151,8 +154,10 @@
               <p class="slide__meta">Residence 44B · South-west</p>
               <h3 class="slide__title">The Long Kitchen</h3>
               <p class="slide__price">$5,100,000 <span>· 3 bed · 2,410 sq ft</span></p>
-              <button class="slide__btn" type="button">View residence</button>
-              <button class="slide__ask" type="button" data-ask="44B"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.6 9.6 0 0 1-2.6-.4L3 21l1.6-4.2A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg> Ask this residence</button>
+              <div class="slide__actions">
+                <button class="slide__btn" type="button">View residence</button>
+                <button class="slide__ask" type="button" data-ask="44B"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.6 9.6 0 0 1-2.6-.4L3 21l1.6-4.2A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg> Ask this residence</button>
+              </div>
             </div>
           </article>
 
@@ -163,8 +168,10 @@
               <p class="slide__meta">Residence 47C · West</p>
               <h3 class="slide__title">The Quiet Floor</h3>
               <p class="slide__price">$5,900,000 <span>· 3 bed · 2,620 sq ft</span></p>
-              <button class="slide__btn" type="button">View residence</button>
-              <button class="slide__ask" type="button" data-ask="47C"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.6 9.6 0 0 1-2.6-.4L3 21l1.6-4.2A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg> Ask this residence</button>
+              <div class="slide__actions">
+                <button class="slide__btn" type="button">View residence</button>
+                <button class="slide__ask" type="button" data-ask="47C"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.6 9.6 0 0 1-2.6-.4L3 21l1.6-4.2A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg> Ask this residence</button>
+              </div>
             </div>
           </article>
 
@@ -175,8 +182,10 @@
               <p class="slide__meta">Residence 52 · Full floor</p>
               <h3 class="slide__title">The Upper House</h3>
               <p class="slide__price">Price on request <span>· 4 bed · 3,880 sq ft</span></p>
-              <button class="slide__btn" type="button">View residence</button>
-              <button class="slide__ask" type="button" data-ask="52"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.6 9.6 0 0 1-2.6-.4L3 21l1.6-4.2A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg> Ask this residence</button>
+              <div class="slide__actions">
+                <button class="slide__btn" type="button">View residence</button>
+                <button class="slide__ask" type="button" data-ask="52"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.6 9.6 0 0 1-2.6-.4L3 21l1.6-4.2A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg> Ask this residence</button>
+              </div>
             </div>
           </article>
         </div>

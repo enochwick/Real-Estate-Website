@@ -190,13 +190,13 @@
     const HALF = 3;
     // rot / scale / x(rem) / y(rem) / z-index, centre outwards.
     const SLOTS = [
-      { rot: -21, scale: 0.776, x: -30, y: 7.3, z: 1 },
-      { rot: -14, scale: 0.850, x: -22, y: 4.0, z: 2 },
-      { rot:  -7, scale: 0.935, x: -11, y: 1.3, z: 3 },
-      { rot:   0, scale: 1.000, x:   0, y: 0.0, z: 10 },
-      { rot:   7, scale: 0.935, x:  11, y: 1.3, z: 3 },
-      { rot:  14, scale: 0.850, x:  22, y: 4.0, z: 2 },
-      { rot:  21, scale: 0.776, x:  30, y: 7.3, z: 1 },
+      { rot: -21, scale: 0.800, x: -18.5, y: 5.4, z: 1 },
+      { rot: -14, scale: 0.868, x: -13.5, y: 3.0, z: 2 },
+      { rot:  -7, scale: 0.944, x:  -6.8, y: 1.0, z: 3 },
+      { rot:   0, scale: 1.000, x:    0,  y: 0.0, z: 10 },
+      { rot:   7, scale: 0.944, x:   6.8, y: 1.0, z: 3 },
+      { rot:  14, scale: 0.868, x:  13.5, y: 3.0, z: 2 },
+      { rot:  21, scale: 0.800, x:  18.5, y: 5.4, z: 1 },
     ];
 
     const total = PLATES.length;
@@ -218,7 +218,7 @@
       const centre = total >> 1;
       const d = total > 1 ? (slot - centre) / centre : 0;
       const a = Math.abs(d);
-      return { rot: d * 21, scale: 1 - 0.2244 * a * a, x: d * 30, y: a * a * 7.3, z: 10 - Math.abs(slot - centre) };
+      return { rot: d * 21, scale: 1 - 0.2 * a * a, x: d * 18.5, y: a * a * 5.4, z: 10 - Math.abs(slot - centre) };
     };
 
     const cards = PLATES.map(([src, alt]) => {
@@ -291,7 +291,7 @@
             // our cards are narrower relative to their spread. 3rem reads as a
             // spread rather than a gap.
             const norm = centreSlot > 0 ? (slot - centreSlot) / centreSlot : 0;
-            const push = 3 * (1 - Math.abs(norm)) * (1 + 0.2 * Math.max(0, 3 - d)) * m;
+            const push = 2.2 * (1 - Math.abs(norm)) * (1 + 0.2 * Math.max(0, 3 - d)) * m;
             x += slot < hovered ? -push : push;
             rot += slot < hovered ? -3 / (d + 1) : 3 / (d + 1);
           }

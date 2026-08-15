@@ -67,6 +67,16 @@ Details worth knowing:
   mobile). Keep it proportional to `FRAME_COUNT` — roughly 2.2vh of scroll per frame —
   or the scrub pace changes.
 
+## Spacing & the hero hand-off
+
+Every section below the hero shares one vertical rhythm: `.band { padding-block:
+clamp(6rem, 13vw, var(--sp-9)) }`. Change that one line and the whole page moves
+together — don't add one-off padding to individual sections.
+
+The stage ends with `.stage__fade`, a 26vh gradient from transparent to `--ink` pinned
+to the bottom of the sticky layer. Without it the last frame met the black page on a
+hard horizon. It sits at `z-index: 3` — above the canvas and scrim, below the copy.
+
 ## Fan carousel & residence slider
 
 Both were specced as React components (GSAP fan carousel, Tailwind image-expansion
@@ -84,6 +94,8 @@ string and the easing lives in a CSS transition, so there is no animation librar
   dialled to 3rem. Retune this if you change card width or the x offsets.
 - Below 1024px a spread multiplier shrinks the x offsets; outer cards are clipped by
   the section's `overflow: hidden`, which is intentional.
+- Plate width and the slot x-offsets move together. Widen the cards without pulling the
+  offsets in and the fan spreads instead of stacking.
 
 **Residence slider** (`#residences`). Tabs filter by status, the track is CSS
 scroll-snap, dots and arrows drive `scrollTo`, and a scroll listener keeps the dots

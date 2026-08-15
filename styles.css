@@ -16,6 +16,7 @@
 
   --sp-1: .5rem;  --sp-2: .75rem; --sp-3: 1rem;  --sp-4: 1.5rem;
   --sp-5: 2rem;   --sp-6: 3rem;   --sp-7: 4.5rem; --sp-8: 7rem;
+  --sp-9: 10rem;
 
   --r-sm: 6px; --r-md: 12px; --r-lg: 20px;
   --shadow: 0 26px 70px -28px rgba(0, 0, 0, .85);
@@ -223,6 +224,17 @@ a { color: inherit; }
     linear-gradient(to bottom, rgba(12, 10, 9, .58) 0%, rgba(12, 10, 9, 0) 34%);
 }
 
+/* The last inch of the frame dissolves into the page ground, so the stage
+   never ends on a hard horizon against the black below it. */
+.stage__fade {
+  position: absolute;
+  z-index: 3;
+  inset: auto 0 0;
+  height: 26vh;
+  background: linear-gradient(to top, var(--ink) 0%, rgba(11, 9, 8, .8) 32%, transparent 100%);
+  pointer-events: none;
+}
+
 .stage__copy {
   position: absolute;
   z-index: 4;
@@ -351,6 +363,53 @@ a { color: inherit; }
   .stage__copy { bottom: clamp(4.5rem, 10vh, 7rem); }
 }
 
+/* ── Bands ──────────────────────────────────────────────────────
+   Every section below the hero shares one vertical rhythm, generous at
+   every width. Change it here and the whole page moves together.
+   ────────────────────────────────────────────────────────────────── */
+.band { padding-block: clamp(6rem, 13vw, var(--sp-9)); }
+.band--tint { background: var(--surface); }
+
+.intro { max-width: 74ch; }
+.intro__text {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(1.4rem, 3vw, 2.15rem);
+  line-height: 1.32;
+  letter-spacing: -.01em;
+  margin: 0;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--sp-4);
+  margin: var(--sp-7) 0 0;
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--line);
+}
+.stats dt {
+  font-size: .72rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.stats dd {
+  margin: .35rem 0 0;
+  font-family: var(--display);
+  font-size: 1.75rem;
+  font-weight: 400;
+}
+
+.sectionHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-7);
+}
+.sectionHead .eyebrow { margin-bottom: var(--sp-2); }
+
 /* ── Shared icon button ─────────────────────────────────────────── */
 .iconBtn {
   position: relative;
@@ -389,13 +448,13 @@ a { color: inherit; }
    Slot geometry mirrors the reference component; JS only writes the
    transform, so the easing and timing stay in CSS.
    ────────────────────────────────────────────────────────────────── */
-.fan-band { padding-bottom: clamp(2.5rem, 6vw, 4rem); }
-.fan-head { text-align: center; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+.fan-band { padding-bottom: clamp(4rem, 8vw, 6rem); }
+.fan-head { text-align: center; margin-bottom: clamp(2.5rem, 5vw, 3.5rem); }
 .fan-head .h2 { max-width: 20ch; margin-inline: auto; }
 
 .fan {
   position: relative;
-  height: clamp(22rem, 46vw, 34rem);
+  height: clamp(23rem, 44vw, 34rem);
   margin-inline: auto;
   display: grid;
   place-items: center;
@@ -410,7 +469,7 @@ a { color: inherit; }
 }
 .fan__card {
   position: absolute;
-  width: clamp(9rem, 17vw, 14.5rem);
+  width: clamp(12rem, 22vw, 19rem);
   aspect-ratio: 3 / 4;
   border-radius: 14px;
   overflow: hidden;
@@ -435,7 +494,7 @@ a { color: inherit; }
   align-items: center;
   justify-content: center;
   gap: var(--sp-4);
-  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
 }
 .fan__dots { display: flex; align-items: center; gap: .5rem; }
 .fan__dot {
@@ -452,7 +511,7 @@ a { color: inherit; }
 
 /* ── Residence slider ───────────────────────────────────────────── */
 .slider {
-  padding: clamp(1.25rem, 3vw, 2.5rem);
+  padding: clamp(1.5rem, 3.5vw, 3rem);
   border-radius: var(--r-lg);
   border: 1px solid var(--line);
   background: var(--surface);
@@ -464,7 +523,7 @@ a { color: inherit; }
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-3);
-  margin-bottom: var(--sp-5);
+  margin-bottom: var(--sp-6);
 }
 .tabs { display: flex; flex-wrap: wrap; gap: .5rem; }
 .tab {
@@ -502,7 +561,7 @@ a { color: inherit; }
   position: relative;
   flex: 0 0 100%;
   scroll-snap-align: start;
-  aspect-ratio: 1.5 / 1;
+  aspect-ratio: 1.45 / 1;
   border-radius: var(--r-lg);
   overflow: hidden;
   border: 1px solid var(--line);
@@ -512,8 +571,9 @@ a { color: inherit; }
 }
 .slide:hover { border-color: rgba(244, 239, 232, .22); }
 .slide.is-hidden { display: none; }
+/* Two across from tablet up. Three was too narrow once each card carried a
+   price line and two actions — the badge collided with the meta line. */
 @media (min-width: 640px) { .slide { flex-basis: 48%; } }
-@media (min-width: 1024px) { .slide { flex-basis: 31.8%; } }
 
 .slide > img {
   position: absolute;
@@ -748,7 +808,7 @@ a { color: inherit; }
 .footer {
   background: var(--surface);
   border-top: 1px solid var(--line);
-  padding-block: var(--sp-7) var(--sp-4);
+  padding-block: var(--sp-8) var(--sp-5);
 }
 .footer__inner {
   display: grid;
@@ -875,7 +935,7 @@ body.is-locked { overflow: hidden; }
 .talk__cta { gap: .6rem; }
 .talk__examples {
   list-style: none;
-  margin: var(--sp-6) 0 0;
+  margin: var(--sp-7) 0 0;
   padding: 0;
   display: grid;
   gap: .55rem;
@@ -1076,11 +1136,11 @@ body.is-locked { overflow: hidden; }
 }
 
 /* ── Ask this residence ─────────────────────────────────────────── */
+.slide__actions { display: flex; flex-wrap: wrap; gap: .6rem; }
 .slide__ask {
   display: inline-flex;
   align-items: center;
   gap: .45rem;
-  margin-left: .5rem;
   padding: .5rem .9rem;
   border-radius: 8px;
   border: 1px solid rgba(244, 239, 232, .28);
@@ -1237,7 +1297,7 @@ body.is-locked { overflow: hidden; }
     border-radius: var(--r-lg) var(--r-lg) 0 0;
     transform: translateY(2rem);
   }
-  .slide__ask { margin-left: 0; margin-top: .5rem; }
+
 }
 
 @media (prefers-reduced-motion: reduce) {
