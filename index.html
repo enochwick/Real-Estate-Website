@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meridian — Residences above the harbour</title>
+<meta name="description" content="Meridian Residential. Harbour-facing residences on the upper floors, represented with the care they deserve.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2314110f'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23c4622d'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="frames/frame_0001.webp">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <a class="nav__brand" href="#top">
+    <span class="nav__mark" aria-hidden="true"></span>
+    Meridian
+  </a>
+  <nav class="nav__links" aria-label="Primary">
+    <a href="#residences">Residences</a>
+    <a href="#building">The Building</a>
+    <a href="#team">Team</a>
+  </nav>
+  <a class="btn btn--ghost nav__cta" href="#enquire">Book a viewing</a>
+</header>
+
+<main id="top">
+
+  <!-- ── Scroll-scrubbed frame sequence ───────────────────────────────
+       One tall stage drives the whole shot. The canvas stays pinned for its
+       full height: first behind the hero copy (interior → balcony), then
+       behind "The building", which scrolls up over the descent to the street.
+  ──────────────────────────────────────────────────────────────────── -->
+  <div class="stage" id="stage">
+    <div class="stage__sticky">
+      <canvas class="stage__canvas" id="heroCanvas" aria-hidden="true"></canvas>
+      <img class="stage__poster" src="images/poster.webp" alt="An open-plan kitchen and living room on a high floor, floor-to-ceiling windows onto a harbour skyline at sunset.">
+      <div class="stage__scrim" aria-hidden="true"></div>
+
+      <div class="stage__copy">
+        <article class="beat is-active" data-beat="0">
+          <p class="eyebrow">Meridian Residential</p>
+          <h1 class="display">Homes with a view<br>of everything.</h1>
+          <p class="lede">Twelve harbour-facing residences on the upper floors. Quietly listed, carefully shown.</p>
+        </article>
+
+        <article class="beat" data-beat="1">
+          <p class="eyebrow">Ready when you are</p>
+          <h2 class="display">Come see it<br>at golden hour.</h2>
+          <div class="stage__actions">
+            <a class="btn btn--solid" href="#enquire">Book a private viewing</a>
+            <a class="btn btn--ghost" href="#residences">Browse residences</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="stage__cue" id="heroCue" aria-hidden="true">
+        <span>Scroll</span>
+        <span class="stage__cueLine"></span>
+      </div>
+
+      <div class="stage__rail" aria-hidden="true"><i id="heroRailFill"></i></div>
+      <div class="stage__loader" id="heroLoader" aria-hidden="true"><i id="heroLoaderFill"></i></div>
+    </div>
+
+    <!-- ── Intro — pinned over the descent to street level ────────── -->
+    <section class="band--over beat" data-beat="2" id="building">
+      <div class="wrap intro">
+        <p class="eyebrow">The building</p>
+        <p class="intro__text">One tower, one entrance, one lift lobby per floor. Meridian sits where the ridge drops into the harbour — high enough for the whole skyline, close enough to walk to dinner.</p>
+        <dl class="stats">
+          <div><dt>Floors</dt><dd>38–52</dd></div>
+          <div><dt>Residences</dt><dd>12</dd></div>
+          <div><dt>From</dt><dd>$4.2M</dd></div>
+          <div><dt>Outlook</dt><dd>West</dd></div>
+        </dl>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── Residences ──────────────────────────────────────────────── -->
+  <section class="band band--tint" id="residences">
+    <div class="wrap">
+      <header class="sectionHead">
+        <h2 class="h2">Available residences</h2>
+        <a class="link" href="#enquire">Request the full list →</a>
+      </header>
+
+      <div class="grid">
+        <article class="card">
+          <div class="card__media"><img src="images/interior.webp" alt="Walnut kitchen island and breakfast stools opening onto the living room and the city beyond." loading="lazy" width="1280" height="720"></div>
+          <div class="card__body">
+            <p class="card__meta">Residence 41A · Available</p>
+            <h3 class="card__title">The Corner Living</h3>
+            <p class="card__specs">3 bed · 3.5 bath · 2,140 sq ft</p>
+            <p class="card__price">$4,250,000</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card__media"><img src="images/terrace.webp" alt="Dining table set beside full-height glazing, with the terrace and harbour behind it." loading="lazy" width="1280" height="720"></div>
+          <div class="card__body">
+            <p class="card__meta">Residence 47C · Available</p>
+            <h3 class="card__title">The Terrace</h3>
+            <p class="card__specs">3 bed · 3 bath · 2,410 sq ft</p>
+            <p class="card__price">$5,100,000</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card__media"><img src="images/skyline.webp" alt="Sunset skyline and harbour seen from the upper floors." loading="lazy" width="1280" height="720"></div>
+          <div class="card__body">
+            <p class="card__meta">Residence 52 · By appointment</p>
+            <h3 class="card__title">The Upper House</h3>
+            <p class="card__specs">4 bed · 4.5 bath · 3,880 sq ft</p>
+            <p class="card__price">Price on request</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Split feature ───────────────────────────────────────────── -->
+  <section class="band split" id="team">
+    <div class="wrap split__inner">
+      <div class="split__media">
+        <img src="images/aerial.webp" alt="A tree-lined street running between two residential towers toward the sunset." loading="lazy" width="1280" height="720">
+      </div>
+      <div class="split__text">
+        <p class="eyebrow">How we work</p>
+        <h2 class="h2">We show three homes, not thirty.</h2>
+        <p>Most of what we represent never reaches a portal. We learn what you actually want — the floor, the light, the hour you get home — and then we show you the two or three places that answer it.</p>
+        <p>No open houses. No weekend crowds. One agent, start to close.</p>
+        <a class="link" href="#enquire">Start a conversation →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ─────────────────────────────────────────────────────── -->
+  <section class="band cta" id="enquire">
+    <div class="wrap cta__inner">
+      <h2 class="display cta__title">Book a private viewing</h2>
+      <p class="lede">Tell us the floor you have in mind. We'll arrange it for golden hour.</p>
+      <form class="form" novalidate>
+        <label class="field">
+          <span>Name</span>
+          <input type="text" name="name" autocomplete="name" placeholder="Your name" required>
+        </label>
+        <label class="field">
+          <span>Email</span>
+          <input type="email" name="email" autocomplete="email" placeholder="you@email.com" required>
+        </label>
+        <label class="field field--wide">
+          <span>What are you looking for?</span>
+          <input type="text" name="brief" placeholder="Three bedrooms, high floor, west-facing…">
+        </label>
+        <button class="btn btn--solid" type="submit">Request a viewing</button>
+      </form>
+      <p class="form__note" id="formNote" role="status"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <a class="nav__brand" href="#top"><span class="nav__mark" aria-hidden="true"></span> Meridian</a>
+    <p class="footer__meta">Meridian Residential · Licensed brokerage · © 2026</p>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
