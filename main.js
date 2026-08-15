@@ -167,14 +167,14 @@
     boot();
   }
 
-  /* ── Gallery: unfurling 3D matrix ─────────────────────────────
-     Fills four columns from the listing stills, then writes a single
-     0→1 custom property as it scrolls. All the transform maths lives in
-     CSS calc(), so there is one style write per frame.
+  /* ── Fan carousel ─────────────────────────────────────────────
+     Seven visible slots; the rest wait off-stage. Slot geometry is the
+     same table the reference component used, but the animation is a CSS
+     transition — JS only ever writes a transform string.
   ─────────────────────────────────────────────────────────────── */
-  const gallery = document.getElementById('gallery');
+  const fanLayout = document.getElementById('fanLayout');
 
-  if (gallery) {
+  if (fanLayout) {
     const PLATES = [
       ['images/listing-living.webp',  'Living room facing the harbour'],
       ['images/listing-kitchen.webp', 'Walnut kitchen and island'],
@@ -186,46 +186,301 @@
       ['images/aerial.webp',          'The street below the tower'],
     ];
 
-    gallery.querySelectorAll('.gallery__col').forEach((col, c) => {
-      // Each column takes every 4th plate, doubled so it never runs dry.
-      const own = PLATES.filter((_, i) => i % 4 === c);
-      [...own, ...own, ...own].forEach(([src, alt]) => {
-        const img = new Image();
-        img.src = src;
-        img.alt = alt;
-        img.loading = 'lazy';
-        img.decoding = 'async';
-        col.append(img);
+    const MAX_VISIBLE = 7;
+    const HALF = 3;
+    // rot / scale / x(rem) / y(rem) / z-index, centre outwards.
+    const SLOTS = [
+      { rot: -21, scale: 0.776, x: -30, y: 7.3, z: 1 },
+      { rot: -14, scale: 0.850, x: -22, y: 4.0, z: 2 },
+      { rot:  -7, scale: 0.935, x: -11, y: 1.3, z: 3 },
+      { rot:   0, scale: 1.000, x:   0, y: 0.0, z: 10 },
+      { rot:   7, scale: 0.935, x:  11, y: 1.3, z: 3 },
+      { rot:  14, scale: 0.850, x:  22, y: 4.0, z: 2 },
+      { rot:  21, scale: 0.776, x:  30, y: 7.3, z: 1 },
+    ];
+
+    const total = PLATES.length;
+    const paginated = total > MAX_VISIBLE;
+    const slotCount = paginated ? MAX_VISIBLE : total;
+
+    // Narrow viewports cannot afford the full ±30rem spread.
+    const spread = () => {
+      const w = window.innerWidth;
+      if (w < 480) return 0.28;
+      if (w < 640) return 0.38;
+      if (w < 768) return 0.5;
+      if (w < 1024) return 0.75;
+      return 1;
+    };
+
+    const slotAt = (slot) => {
+      if (total >= MAX_VISIBLE) return SLOTS[slot];
+      const centre = total >> 1;
+      const d = total > 1 ? (slot - centre) / centre : 0;
+      const a = Math.abs(d);
+      return { rot: d * 21, scale: 1 - 0.2244 * a * a, x: d * 30, y: a * a * 7.3, z: 10 - Math.abs(slot - centre) };
+    };
+
+    const cards = PLATES.map(([src, alt]) => {
+      const el = document.createElement('div');
+      el.className = 'fan__card';
+      const img = new Image();
+      img.src = src;
+      img.alt = alt;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      el.append(img);
+      fanLayout.append(el);
+      return el;
+    });
+
+    const dotsWrap = document.getElementById('fanDots');
+    const dots = PLATES.map((_, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'fan__dot';
+      b.setAttribute('aria-label', `Image ${i + 1}`);
+      b.addEventListener('click', () => go(i));
+      dotsWrap.append(b);
+      return b;
+    });
+
+    let centre = paginated ? HALF : total >> 1;
+    let visible = new Map();
+    let hovered = null;
+
+    const visibleMap = (c) => {
+      const map = new Map();
+      if (!paginated) { cards.forEach((_, i) => map.set(i, i)); return map; }
+      for (let slot = 0; slot < MAX_VISIBLE; slot++) {
+        map.set((((c + slot - HALF) % total) + total) % total, slot);
+      }
+      return map;
+    };
+
+    const place = (el, t, instant) => {
+      if (instant) el.classList.add('fan__card--instant');
+      el.style.zIndex = t.z;
+      el.style.opacity = t.opacity;
+      el.style.transform =
+        `translate(${t.x}rem, ${t.y}rem) rotate(${t.rot}deg) scale(${t.scale})`;
+      if (instant) {
+        void el.offsetWidth;              // flush, so the next change animates
+        el.classList.remove('fan__card--instant');
+      }
+    };
+
+    // Hovering a card lifts it and pushes its neighbours outward.
+    const layout = (first) => {
+      const m = spread();
+      const centreSlot = slotCount >> 1;
+
+      visible.forEach((slot, i) => {
+        const base = slotAt(slot);
+        let { rot, scale } = base;
+        let x = base.x * m;
+        let y = base.y;
+
+        if (hovered !== null) {
+          const d = Math.abs(slot - hovered);
+          if (slot === hovered) {
+            y -= 2.5;
+            scale *= 1.08;
+          } else {
+            // The reference used a base of 8rem, which tears this fan in two —
+            // our cards are narrower relative to their spread. 3rem reads as a
+            // spread rather than a gap.
+            const norm = centreSlot > 0 ? (slot - centreSlot) / centreSlot : 0;
+            const push = 3 * (1 - Math.abs(norm)) * (1 + 0.2 * Math.max(0, 3 - d)) * m;
+            x += slot < hovered ? -push : push;
+            rot += slot < hovered ? -3 / (d + 1) : 3 / (d + 1);
+          }
+        }
+        place(cards[i], { x, y, rot, scale, z: base.z, opacity: 1 }, first);
+      });
+    };
+
+    function go(next) {
+      const dir = next > centre || (centre === total - 1 && next === 0) ? 1 : -1;
+      centre = ((next % total) + total) % total;
+      const nextVisible = visibleMap(centre);
+      const m = spread();
+
+      // Anything leaving flies out the opposite way.
+      visible.forEach((slot, i) => {
+        if (nextVisible.has(i)) return;
+        place(cards[i], { x: dir > 0 ? -40 * m : 40 * m, y: 0, rot: dir > 0 ? -30 : 30, scale: 0.5, z: 0, opacity: 0 }, false);
+      });
+      // Anything arriving is parked off-stage, then animated in.
+      nextVisible.forEach((slot, i) => {
+        if (visible.has(i)) return;
+        const base = slotAt(slot);
+        place(cards[i], { x: dir > 0 ? 40 * m : -40 * m, y: base.y, rot: dir > 0 ? 30 : -30, scale: 0.5, z: base.z, opacity: 0 }, true);
+      });
+
+      visible = nextVisible;
+      hovered = null;
+      layout(false);
+      dots.forEach((d, i) => d.classList.toggle('is-active', i === centre));
+    }
+
+    cards.forEach((el, i) => {
+      el.addEventListener('mouseenter', () => {
+        const slot = visible.get(i);
+        if (slot === undefined || reduced) return;
+        hovered = slot;
+        layout(false);
+      });
+    });
+    fanLayout.addEventListener('mouseleave', () => {
+      if (hovered === null) return;
+      hovered = null;
+      layout(false);
+    });
+
+    document.querySelector('[data-fan="prev"]')
+      .addEventListener('click', () => go(centre - 1));
+    document.querySelector('[data-fan="next"]')
+      .addEventListener('click', () => go(centre + 1));
+
+    window.addEventListener('resize', () => layout(true));
+
+    visible = visibleMap(centre);
+    cards.forEach((el, i) => {
+      if (!visible.has(i)) place(el, { x: 0, y: 0, rot: 0, scale: 0.3, z: 0, opacity: 0 }, true);
+    });
+    layout(true);
+    requestAnimationFrame(() => layout(false));
+    dots.forEach((d, i) => d.classList.toggle('is-active', i === centre));
+  }
+
+  /* ── Residence slider: tabs, snap track, dots, lightbox ───────── */
+  const slider = document.getElementById('slider');
+
+  if (slider) {
+    const track  = document.getElementById('sliderTrack');
+    const dotsEl = document.getElementById('sliderDots');
+    const slides = [...track.children];
+    let shown = slides;
+    let index = 0;
+
+    const dots = slides.map((_, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'slider__dot';
+      b.setAttribute('aria-label', `Go to residence ${i + 1}`);
+      b.addEventListener('click', () => scrollTo(i));
+      dotsEl.append(b);
+      return b;
+    });
+
+    const syncDots = () => {
+      dots.forEach((d, i) => {
+        d.hidden = i >= shown.length;
+        d.classList.toggle('is-active', i === index);
+      });
+    };
+
+    function scrollTo(i) {
+      index = Math.max(0, Math.min(i, shown.length - 1));
+      const card = shown[index];
+      if (card) track.scrollTo({ left: card.offsetLeft - track.offsetLeft, behavior: reduced ? 'auto' : 'smooth' });
+      syncDots();
+    }
+
+    // Keep the dots honest when the track is swiped rather than clicked.
+    let scrollTick = false;
+    track.addEventListener('scroll', () => {
+      if (scrollTick) return;
+      scrollTick = true;
+      requestAnimationFrame(() => {
+        scrollTick = false;
+        const x = track.scrollLeft + track.offsetLeft;
+        let nearest = 0, best = Infinity;
+        shown.forEach((c, i) => {
+          const d = Math.abs(c.offsetLeft - x);
+          if (d < best) { best = d; nearest = i; }
+        });
+        if (nearest !== index) { index = nearest; syncDots(); }
+      });
+    }, { passive: true });
+
+    slider.querySelectorAll('.tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        slider.querySelectorAll('.tab').forEach((t) => {
+          const on = t === tab;
+          t.classList.toggle('is-active', on);
+          t.setAttribute('aria-selected', String(on));
+        });
+        const filter = tab.dataset.filter;
+        slides.forEach((s) => {
+          const match = filter === 'all' || s.dataset.status === filter;
+          s.classList.toggle('is-hidden', !match);
+        });
+        shown = slides.filter((s) => !s.classList.contains('is-hidden'));
+        index = 0;
+        track.scrollTo({ left: 0, behavior: reduced ? 'auto' : 'smooth' });
+        syncDots();
       });
     });
 
-    if (!reduced) {
-      let gTicking = false;
-      const updateGallery = () => {
-        gTicking = false;
-        const rect = gallery.getBoundingClientRect();
-        const travel = gallery.offsetHeight - window.innerHeight;
-        const g = travel > 0
-          ? Math.min(Math.max(-rect.top / travel, 0), 1)
-          : 0;
-        // Ease the tail so the matrix settles instead of stopping dead.
-        gallery.style.setProperty('--g', (1 - Math.pow(1 - g, 1.7)).toFixed(4));
-      };
-      window.addEventListener('scroll', () => {
-        if (gTicking) return;
-        gTicking = true;
-        requestAnimationFrame(updateGallery);
-      }, { passive: true });
-      window.addEventListener('resize', updateGallery);
-      updateGallery();
-    } else {
-      gallery.style.setProperty('--g', '1');
-    }
+    slider.querySelector('[data-slide="prev"]')
+      .addEventListener('click', () => scrollTo(index - 1 < 0 ? shown.length - 1 : index - 1));
+    slider.querySelector('[data-slide="next"]')
+      .addEventListener('click', () => scrollTo(index + 1 >= shown.length ? 0 : index + 1));
+
+    /* Lightbox */
+    const box    = document.getElementById('lightbox');
+    const boxImg = document.getElementById('lightboxImg');
+    const boxTtl = document.getElementById('lightboxTitle');
+    const boxCnt = document.getElementById('lightboxCount');
+    let boxIndex = 0;
+    let lastFocus = null;
+
+    const paint = () => {
+      const card = shown[boxIndex];
+      if (!card) return;
+      boxImg.src = card.dataset.img;
+      boxImg.alt = card.querySelector('img').alt;
+      boxTtl.textContent = card.querySelector('.slide__title').textContent;
+      boxCnt.textContent = `${boxIndex + 1} of ${shown.length}`;
+    };
+    const open = (i) => {
+      boxIndex = i;
+      lastFocus = document.activeElement;
+      paint();
+      box.hidden = false;
+      box.querySelector('.lightbox__close').focus();
+    };
+    const close = () => {
+      box.hidden = true;
+      lastFocus?.focus();
+    };
+    const step = (d) => {
+      boxIndex = (boxIndex + d + shown.length) % shown.length;
+      paint();
+    };
+
+    slides.forEach((card) => {
+      card.addEventListener('click', () => open(shown.indexOf(card)));
+    });
+    box.querySelector('.lightbox__close').addEventListener('click', close);
+    box.querySelector('.lightbox__nav--prev').addEventListener('click', () => step(-1));
+    box.querySelector('.lightbox__nav--next').addEventListener('click', () => step(1));
+    box.addEventListener('click', (e) => { if (e.target === box) close(); });
+    document.addEventListener('keydown', (e) => {
+      if (box.hidden) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') step(-1);
+      if (e.key === 'ArrowRight') step(1);
+    });
+
+    syncDots();
   }
 
   /* ── Reveal on scroll ─────────────────────────────────────────── */
   const revealTargets = document.querySelectorAll(
-    '.intro, .sectionHead, .card, .split__media, .split__text, .cta__inner'
+    '.intro, .fan-head, .slider, .split__media, .split__text, .cta__inner'
   );
   if (!reduced && 'IntersectionObserver' in window) {
     revealTargets.forEach((el, i) => {

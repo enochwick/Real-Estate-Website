@@ -81,93 +81,121 @@
     </section>
   </div>
 
-  <!-- ── Gallery — unfurling 3D matrix ───────────────────────────── -->
-  <section class="gallery" id="gallery" aria-label="Inside the residences">
-    <div class="gallery__sticky">
-      <div class="gallery__frame">
-        <div class="gallery__scene" aria-hidden="true">
-          <div class="gallery__matrix">
-            <div class="gallery__col" data-col="1"></div>
-            <div class="gallery__col" data-col="2"></div>
-            <div class="gallery__col" data-col="3"></div>
-            <div class="gallery__col" data-col="4"></div>
-          </div>
-          <div class="gallery__mask"></div>
-        </div>
-        <div class="gallery__lede">
-          <p class="eyebrow">Inside</p>
-          <h2 class="h2">Every room faces the light.</h2>
-        </div>
-      </div>
+  <!-- ── Fan carousel — the collection at a glance ──────────────── -->
+  <section class="band fan-band" id="gallery" aria-label="Inside the residences">
+    <div class="wrap fan-head">
+      <p class="eyebrow">Inside</p>
+      <h2 class="h2">Every room faces the light.</h2>
+    </div>
+
+    <div class="fan" id="fan">
+      <div class="fan__layout" id="fanLayout"></div>
+    </div>
+
+    <div class="fan__nav" id="fanNav">
+      <button class="iconBtn" type="button" data-fan="prev" aria-label="Previous image">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="fan__dots" id="fanDots" role="tablist" aria-label="Image"></div>
+      <button class="iconBtn" type="button" data-fan="next" aria-label="Next image">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
     </div>
   </section>
 
-  <!-- ── Residences ──────────────────────────────────────────────── -->
+  <!-- ── Residences — filterable slider ─────────────────────────── -->
   <section class="band" id="residences">
     <div class="wrap">
-      <header class="sectionHead">
-        <div>
-          <p class="eyebrow">Available now</p>
-          <h2 class="h2">Four residences</h2>
-        </div>
-        <a class="link" href="#enquire">Request the full list →</a>
-      </header>
+      <div class="slider" id="slider">
+        <header class="slider__head">
+          <div class="tabs" role="tablist" aria-label="Filter residences">
+            <button class="tab is-active" type="button" role="tab" aria-selected="true" data-filter="all">All</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-filter="available">Available</button>
+            <button class="tab" type="button" role="tab" aria-selected="false" data-filter="appointment">By appointment</button>
+          </div>
+          <a class="link slider__all" href="#enquire">Request the full list →</a>
+        </header>
 
-      <div class="grid">
-        <article class="card">
-          <div class="card__media">
+        <div class="slider__track" id="sliderTrack">
+          <article class="slide" data-status="available" data-img="images/listing-living.webp">
             <img src="images/listing-living.webp" alt="Living room with a linen sectional facing floor-to-ceiling glazing over the harbour at sunset." loading="lazy" width="1280" height="960">
-            <span class="card__tag">Available</span>
-          </div>
-          <div class="card__body">
-            <p class="card__meta">Residence 41A · West</p>
-            <h3 class="card__title">The Corner Living</h3>
-            <p class="card__specs">3 bed · 3.5 bath · 2,140 sq ft</p>
-            <p class="card__price">$4,250,000</p>
-          </div>
-        </article>
+            <span class="slide__badge">Available</span>
+            <div class="slide__body">
+              <p class="slide__meta">Residence 41A · West</p>
+              <h3 class="slide__title">The Corner Living</h3>
+              <p class="slide__price">$4,250,000 <span>· 3 bed · 2,140 sq ft</span></p>
+              <button class="slide__btn" type="button">View residence</button>
+            </div>
+          </article>
 
-        <article class="card">
-          <div class="card__media">
+          <article class="slide" data-status="available" data-img="images/listing-kitchen.webp">
             <img src="images/listing-kitchen.webp" alt="Walnut kitchen with a quartzite island and leather stools, city skyline beyond." loading="lazy" width="1280" height="960">
-            <span class="card__tag">Available</span>
-          </div>
-          <div class="card__body">
-            <p class="card__meta">Residence 44B · South-west</p>
-            <h3 class="card__title">The Long Kitchen</h3>
-            <p class="card__specs">3 bed · 3 bath · 2,410 sq ft</p>
-            <p class="card__price">$5,100,000</p>
-          </div>
-        </article>
+            <span class="slide__badge">Available</span>
+            <div class="slide__body">
+              <p class="slide__meta">Residence 44B · South-west</p>
+              <h3 class="slide__title">The Long Kitchen</h3>
+              <p class="slide__price">$5,100,000 <span>· 3 bed · 2,410 sq ft</span></p>
+              <button class="slide__btn" type="button">View residence</button>
+            </div>
+          </article>
 
-        <article class="card">
-          <div class="card__media">
+          <article class="slide" data-status="available" data-img="images/listing-bedroom.webp">
             <img src="images/listing-bedroom.webp" alt="Primary bedroom at twilight with a walnut platform bed and a window wall over the lit city." loading="lazy" width="1280" height="960">
-            <span class="card__tag">Available</span>
-          </div>
-          <div class="card__body">
-            <p class="card__meta">Residence 47C · West</p>
-            <h3 class="card__title">The Quiet Floor</h3>
-            <p class="card__specs">3 bed · 3.5 bath · 2,620 sq ft</p>
-            <p class="card__price">$5,900,000</p>
-          </div>
-        </article>
+            <span class="slide__badge">Available</span>
+            <div class="slide__body">
+              <p class="slide__meta">Residence 47C · West</p>
+              <h3 class="slide__title">The Quiet Floor</h3>
+              <p class="slide__price">$5,900,000 <span>· 3 bed · 2,620 sq ft</span></p>
+              <button class="slide__btn" type="button">View residence</button>
+            </div>
+          </article>
 
-        <article class="card">
-          <div class="card__media">
+          <article class="slide" data-status="appointment" data-img="images/listing-terrace.webp">
             <img src="images/listing-terrace.webp" alt="Private terrace with teak loungers and a fire bowl above a glowing harbour skyline." loading="lazy" width="1280" height="960">
-            <span class="card__tag card__tag--quiet">By appointment</span>
+            <span class="slide__badge slide__badge--quiet">By appointment</span>
+            <div class="slide__body">
+              <p class="slide__meta">Residence 52 · Full floor</p>
+              <h3 class="slide__title">The Upper House</h3>
+              <p class="slide__price">Price on request <span>· 4 bed · 3,880 sq ft</span></p>
+              <button class="slide__btn" type="button">View residence</button>
+            </div>
+          </article>
+        </div>
+
+        <footer class="slider__foot">
+          <div class="slider__dots" id="sliderDots"></div>
+          <div class="slider__arrows">
+            <button class="iconBtn" type="button" data-slide="prev" aria-label="Previous residence">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="iconBtn" type="button" data-slide="next" aria-label="Next residence">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
           </div>
-          <div class="card__body">
-            <p class="card__meta">Residence 52 · Full floor</p>
-            <h3 class="card__title">The Upper House</h3>
-            <p class="card__specs">4 bed · 4.5 bath · 3,880 sq ft</p>
-            <p class="card__price">Price on request</p>
-          </div>
-        </article>
+        </footer>
       </div>
     </div>
   </section>
+
+  <!-- Lightbox for the residence slides -->
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lightbox__close iconBtn" type="button" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <button class="lightbox__nav lightbox__nav--prev iconBtn" type="button" aria-label="Previous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <figure class="lightbox__figure">
+      <img id="lightboxImg" src="" alt="">
+      <figcaption>
+        <h3 id="lightboxTitle"></h3>
+        <p id="lightboxCount"></p>
+      </figcaption>
+    </figure>
+    <button class="lightbox__nav lightbox__nav--next iconBtn" type="button" aria-label="Next">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
 
   <!-- ── Split feature ───────────────────────────────────────────── -->
   <section class="band split" id="team">

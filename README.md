@@ -67,24 +67,32 @@ Details worth knowing:
   mobile). Keep it proportional to `FRAME_COUNT` — roughly 2.2vh of scroll per frame —
   or the scrub pace changes.
 
-## Gallery
+## Fan carousel & residence slider
 
-`#gallery` is a second sticky scroll container. `main.js` fills its four columns from
-the listing stills and writes one custom property, `--g` (0→1, eased), as it scrolls.
-Every transform is CSS `calc()` off that property, so there is a single style write
-per frame:
+Both were specced as React components (GSAP fan carousel, Tailwind image-expansion
+slider). Both are implemented here in vanilla JS + CSS against the existing tokens.
 
-- the frame widens from 92vw to full bleed and loses its corner radius
-- the matrix unfurls from `rotateY(-46deg) translateZ(-820px)` to nearly flat
-- each column drifts vertically at its own rate
+**Fan carousel** (`#gallery`). Eight plates, seven visible slots, the rest parked
+off-stage. The slot table — rotation, scale, x/y offset, z-index — is the same
+geometry as the reference; the difference is that JS only ever writes a `transform`
+string and the easing lives in a CSS transition, so there is no animation library.
 
-Two things worth knowing if you touch it:
+- Entering cards are placed off-stage with `.fan__card--instant` (transition
+  suppressed), flushed with a forced reflow, then released so the move animates.
+- Hovering lifts a card and pushes its neighbours apart. **The reference's 8rem push
+  tears this fan in two** — our cards are narrower relative to their spread, so it is
+  dialled to 3rem. Retune this if you change card width or the x offsets.
+- Below 1024px a spread multiplier shrinks the x offsets; outer cards are clipped by
+  the section's `overflow: hidden`, which is intentional.
 
-- The matrix is **absolutely positioned and centred with `translate(-50%, -50%)`**,
-  not grid-centred. It is wider than its container, and Chrome aligns an overflowing
-  grid item to the start — grid centring silently pushes it off to one side.
-- Column heights are driven by `--g` alone. There is no JS per-column maths, so adding
-  a fifth column is a CSS change, not a JS one.
+**Residence slider** (`#residences`). Tabs filter by status, the track is CSS
+scroll-snap, dots and arrows drive `scrollTo`, and a scroll listener keeps the dots
+honest when the track is swiped instead of clicked. Clicking a card opens a lightbox
+with arrow-key and Escape support, and focus returns to the card on close.
+
+One deliberate omission: the reference slider carried a light/dark toggle. This site
+is committed to dark, so it was dropped rather than shipped as a control that fights
+the design.
 
 ## Imagery
 
