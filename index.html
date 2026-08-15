@@ -24,6 +24,7 @@
     <a href="#building">The Building</a>
     <a href="#team">Team</a>
   </nav>
+  <button class="nav__talk" type="button" data-voice="open"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v4"/></svg> Talk to Meridian</button>
   <a class="btn btn--ghost nav__cta" href="#enquire">Book a viewing</a>
 </header>
 
@@ -103,6 +104,20 @@
     </div>
   </section>
 
+  <!-- ── Talk to Meridian ───────────────────────────────────────── -->
+  <section class="band talk" id="talk">
+    <div class="wrap talk__inner">
+      <p class="eyebrow">Talk to Meridian</p>
+      <h2 class="h2 talk__title">Tell us what you're looking for.<br>Meridian can help narrow the residences that fit.</h2>
+      <button class="btn btn--solid talk__cta" type="button" data-voice="open"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v4"/></svg> Start a conversation</button>
+      <ul class="talk__examples">
+        <li>“Something high up with sunset views.”</li>
+        <li>“A three-bedroom around $5 million.”</li>
+        <li>“I entertain often, but I want the bedrooms to feel private.”</li>
+      </ul>
+    </div>
+  </section>
+
   <!-- ── Residences — filterable slider ─────────────────────────── -->
   <section class="band" id="residences">
     <div class="wrap">
@@ -117,7 +132,7 @@
         </header>
 
         <div class="slider__track" id="sliderTrack">
-          <article class="slide" data-status="available" data-img="images/listing-living.webp">
+          <article class="slide" data-status="available" data-img="images/listing-living.webp" data-residence="41A">
             <img src="images/listing-living.webp" alt="Living room with a linen sectional facing floor-to-ceiling glazing over the harbour at sunset." loading="lazy" width="1280" height="960">
             <span class="slide__badge">Available</span>
             <div class="slide__body">
@@ -125,10 +140,11 @@
               <h3 class="slide__title">The Corner Living</h3>
               <p class="slide__price">$4,250,000 <span>· 3 bed · 2,140 sq ft</span></p>
               <button class="slide__btn" type="button">View residence</button>
+              <button class="slide__ask" type="button" data-ask="41A"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.6 9.6 0 0 1-2.6-.4L3 21l1.6-4.2A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg> Ask this residence</button>
             </div>
           </article>
 
-          <article class="slide" data-status="available" data-img="images/listing-kitchen.webp">
+          <article class="slide" data-status="available" data-img="images/listing-kitchen.webp" data-residence="44B">
             <img src="images/listing-kitchen.webp" alt="Walnut kitchen with a quartzite island and leather stools, city skyline beyond." loading="lazy" width="1280" height="960">
             <span class="slide__badge">Available</span>
             <div class="slide__body">
@@ -136,10 +152,11 @@
               <h3 class="slide__title">The Long Kitchen</h3>
               <p class="slide__price">$5,100,000 <span>· 3 bed · 2,410 sq ft</span></p>
               <button class="slide__btn" type="button">View residence</button>
+              <button class="slide__ask" type="button" data-ask="44B"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.6 9.6 0 0 1-2.6-.4L3 21l1.6-4.2A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg> Ask this residence</button>
             </div>
           </article>
 
-          <article class="slide" data-status="available" data-img="images/listing-bedroom.webp">
+          <article class="slide" data-status="available" data-img="images/listing-bedroom.webp" data-residence="47C">
             <img src="images/listing-bedroom.webp" alt="Primary bedroom at twilight with a walnut platform bed and a window wall over the lit city." loading="lazy" width="1280" height="960">
             <span class="slide__badge">Available</span>
             <div class="slide__body">
@@ -147,10 +164,11 @@
               <h3 class="slide__title">The Quiet Floor</h3>
               <p class="slide__price">$5,900,000 <span>· 3 bed · 2,620 sq ft</span></p>
               <button class="slide__btn" type="button">View residence</button>
+              <button class="slide__ask" type="button" data-ask="47C"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.6 9.6 0 0 1-2.6-.4L3 21l1.6-4.2A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg> Ask this residence</button>
             </div>
           </article>
 
-          <article class="slide" data-status="appointment" data-img="images/listing-terrace.webp">
+          <article class="slide" data-status="appointment" data-img="images/listing-terrace.webp" data-residence="52">
             <img src="images/listing-terrace.webp" alt="Private terrace with teak loungers and a fire bowl above a glowing harbour skyline." loading="lazy" width="1280" height="960">
             <span class="slide__badge slide__badge--quiet">By appointment</span>
             <div class="slide__body">
@@ -158,6 +176,7 @@
               <h3 class="slide__title">The Upper House</h3>
               <p class="slide__price">Price on request <span>· 4 bed · 3,880 sq ft</span></p>
               <button class="slide__btn" type="button">View residence</button>
+              <button class="slide__ask" type="button" data-ask="52"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.6 9.6 0 0 1-2.6-.4L3 21l1.6-4.2A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg> Ask this residence</button>
             </div>
           </article>
         </div>
@@ -242,6 +261,65 @@
       <p class="form__note" id="formNote" role="status"></p>
     </div>
   </section>
+
+  <!-- ── Talk to Meridian — voice overlay ───────────────────────── -->
+  <div class="voice" id="voice" role="dialog" aria-modal="true" aria-labelledby="voiceHeading" data-status="idle" hidden>
+    <button class="voice__close iconBtn" type="button" data-voice="close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+
+    <div class="voice__stage">
+      <div class="voice__intro" id="voiceIntro">
+        <h2 class="display voice__heading" id="voiceHeading">What are you looking for?</h2>
+        <p class="lede voice__lede">Price, space, light, views, floor, lifestyle — say what matters to you.</p>
+        <div class="voice__prompts" id="voicePrompts"></div>
+      </div>
+
+      <div class="voice__log" id="voiceLog" aria-live="polite"></div>
+      <div class="voice__result" id="voiceResult"></div>
+
+      <div class="voice__controls">
+        <button class="voice__mic" id="voiceMic" type="button" aria-pressed="false" aria-label="Start listening">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v4"/></svg>
+          <span class="voice__wave" id="voiceWave" aria-hidden="true"></span>
+        </button>
+        <p class="voice__status" id="voiceStatus" role="status"></p>
+        <form class="voice__form" id="voiceForm">
+          <label class="visually-hidden" for="voiceInput">Or type what you're looking for</label>
+          <input id="voiceInput" type="text" autocomplete="off" placeholder="Or type what you're looking for">
+          <button class="btn btn--ghost" type="submit">Send</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Ask this residence — panel ─────────────────────────────── -->
+  <div class="chat" id="chat" role="dialog" aria-modal="true" aria-labelledby="chatTitle" hidden>
+    <aside class="chat__panel">
+      <header class="chat__head">
+        <div>
+          <h2 id="chatTitle">Residence</h2>
+          <p class="chat__spec" id="chatSpec"></p>
+          <p class="chat__sub">What would you like to know?</p>
+        </div>
+        <button class="iconBtn" type="button" data-chat="close" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </header>
+
+      <div class="chat__log" id="chatLog" aria-live="polite"></div>
+      <div class="chat__suggestions" id="chatSuggestions"></div>
+
+      <form class="chat__form" id="chatForm">
+        <label class="visually-hidden" for="chatInput">Ask about this residence</label>
+        <input id="chatInput" type="text" autocomplete="off" placeholder="Ask about the space, layout, views, pricing…">
+        <button class="iconBtn" type="submit" aria-label="Send">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+    </aside>
+  </div>
+
 </main>
 
 <footer class="footer">
@@ -272,5 +350,6 @@
 </footer>
 
 <script src="main.js"></script>
+<script type="module" src="js/meridian-ai.js"></script>
 </body>
 </html>

@@ -129,6 +129,74 @@ Then set `FRAME_COUNT` in [main.js](main.js) to the count it prints, and scale t
 
 Current sequence: 157 frames, 1280px wide, ~8.3 MB total.
 
+## Meridian AI
+
+Two experiences, built into the page rather than bolted on: no floating bubble, no
+sparkles, no gradients. Both read from one inventory, `js/residences.js`.
+
+### Talk to Meridian (`js/voice.js`)
+
+A full-screen voice interface, opened from the nav and from its own section. States
+run idle → listening → thinking → speaking, with a mic control, an eight-bar waveform
+that only animates while listening, understated example lines, and a typed fallback
+for anyone who would rather not speak.
+
+A recommendation renders as a residence card with **View residence · Compare · Keep
+talking · Schedule a viewing**.
+
+**Public API, per the brief:**
+
+```js
+window.Meridian.voice.startVoiceConversation()
+window.Meridian.voice.endVoiceConversation()
+window.Meridian.voice.voiceStatus              // idle | listening | thinking | speaking
+window.Meridian.voice.conversationTranscript   // [{ role, text, at }]
+window.Meridian.voice.currentRecommendedProperty
+window.Meridian.voice.propertyRecommendations
+```
+
+### Connecting Retell
+
+The module owns the UI and the states; it does not own the transport. Hand it a driver:
+
+```js
+window.Meridian.voice.setDriver({
+  async start({ onStatus, onTranscript, onResult }) { /* open the web call */ },
+  async submit(text, hooks) { /* optional: typed input */ },
+  async stop() { /* end the call */ },
+});
+```
+
+A driver calls `onStatus(state)`, `onTranscript({ role, text })`, and `onResult({ reply,
+ranked, primary })`. Nothing else in the UI needs to change.
+
+**The API key never goes in the browser.** Keep `RETELL_API_KEY` server-side, expose an
+endpoint (e.g. `POST /api/retell/web-call`) that mints a short-lived access token, and
+let the driver use only that token.
+
+### Ask this residence (`js/residence-chat.js`)
+
+A right-side panel on desktop, a bottom sheet on mobile, opened from a button on each
+listing. It is always bound to one residence — the header shows which — and answers
+only from that record plus the rest of the inventory. Suggested questions are generated
+per residence, so 47C offers a comparison against its nearest neighbour by floor.
+
+### Conversion
+
+Never pushed. **See it in person** surfaces only after two useful exchanges or an
+explicit ask, then hands off to the enquiry form with the residence pre-filled.
+
+### Replacing the mock
+
+`js/advisor.js` is a deterministic stand-in so the interaction could be designed before
+a model was connected. Swap `recommend`, `compare` and `ask` for server calls and keep
+the return shapes — `{ reply, ranked, primary }` and `{ reply, offerViewing }`. Pass the
+residence code as context so the model cannot wander outside the building.
+
+Tone rules are documented at the top of that file and apply to any replacement: calm,
+concise, knowledgeable, never salesy. No exclamation marks, no "Great choice", no "How
+may I assist you", no "As an AI".
+
 ## Files
 
 | | |
@@ -139,6 +207,11 @@ Current sequence: 157 frames, 1280px wide, ~8.3 MB total.
 | [make-frames.sh](make-frames.sh) | Rebuild `frames/` from a video |
 | `frames/` | The 157-frame sequence |
 | `images/listing-*.webp` | Higgsfield-generated listing plates |
+| [js/residences.js](js/residences.js) | The inventory both AI experiences read from |
+| [js/advisor.js](js/advisor.js) | Matching, comparison, response composition (mock) |
+| [js/voice.js](js/voice.js) | Talk to Meridian + the Retell-ready driver interface |
+| [js/residence-chat.js](js/residence-chat.js) | Ask this residence panel |
+| [js/meridian-ai.js](js/meridian-ai.js) | Entry point; wires the viewing hand-off |
 | `images/` | Poster plus the stills used in cards and the split section |
 
 ## Before it goes live
