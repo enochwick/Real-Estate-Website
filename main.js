@@ -167,6 +167,62 @@
     boot();
   }
 
+  /* ── Gallery: unfurling 3D matrix ─────────────────────────────
+     Fills four columns from the listing stills, then writes a single
+     0→1 custom property as it scrolls. All the transform maths lives in
+     CSS calc(), so there is one style write per frame.
+  ─────────────────────────────────────────────────────────────── */
+  const gallery = document.getElementById('gallery');
+
+  if (gallery) {
+    const PLATES = [
+      ['images/listing-living.webp',  'Living room facing the harbour'],
+      ['images/listing-kitchen.webp', 'Walnut kitchen and island'],
+      ['images/listing-bedroom.webp', 'Primary bedroom at twilight'],
+      ['images/listing-terrace.webp', 'Private terrace above the city'],
+      ['images/interior.webp',        'Open-plan living at sunset'],
+      ['images/terrace.webp',         'Dining beside the glazing'],
+      ['images/skyline.webp',         'The skyline from the upper floors'],
+      ['images/aerial.webp',          'The street below the tower'],
+    ];
+
+    gallery.querySelectorAll('.gallery__col').forEach((col, c) => {
+      // Each column takes every 4th plate, doubled so it never runs dry.
+      const own = PLATES.filter((_, i) => i % 4 === c);
+      [...own, ...own, ...own].forEach(([src, alt]) => {
+        const img = new Image();
+        img.src = src;
+        img.alt = alt;
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        col.append(img);
+      });
+    });
+
+    if (!reduced) {
+      let gTicking = false;
+      const updateGallery = () => {
+        gTicking = false;
+        const rect = gallery.getBoundingClientRect();
+        const travel = gallery.offsetHeight - window.innerHeight;
+        const g = travel > 0
+          ? Math.min(Math.max(-rect.top / travel, 0), 1)
+          : 0;
+        // Ease the tail so the matrix settles instead of stopping dead.
+        gallery.style.setProperty('--g', (1 - Math.pow(1 - g, 1.7)).toFixed(4));
+      };
+      window.addEventListener('scroll', () => {
+        if (gTicking) return;
+        gTicking = true;
+        requestAnimationFrame(updateGallery);
+      }, { passive: true });
+      window.addEventListener('resize', updateGallery);
+      updateGallery();
+    } else {
+      gallery.style.setProperty('--g', '1');
+    }
+  }
+
   /* ── Reveal on scroll ─────────────────────────────────────────── */
   const revealTargets = document.querySelectorAll(
     '.intro, .sectionHead, .card, .split__media, .split__text, .cta__inner'

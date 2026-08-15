@@ -9,8 +9,16 @@ Source: `Camera_shot_of_luxury_apartment_202608151106.mp4`, trimmed at frame 157
 The video climbs back out over the harbour after that; those frames are deliberately
 unused. To include them, re-run `make-frames.sh` without a trim.
 
+Below it: a 3D unfurling gallery, four listings, and a dark editorial run down to
+the footer.
+
 Built as plain HTML/CSS/JS — no build step, no dependencies. Drop it on any static
 host (Vercel, Netlify, S3, a folder).
+
+**Not a React project.** The gallery was specced as a shadcn/framer-motion component;
+it is implemented here as CSS transforms driven by the same scroll observer as the
+stage. Moving to Next.js + Tailwind would mean rebuilding the frame-scrub stage, so
+it was kept vanilla. See "Gallery" below.
 
 ## Run it
 
@@ -59,6 +67,43 @@ Details worth knowing:
   mobile). Keep it proportional to `FRAME_COUNT` — roughly 2.2vh of scroll per frame —
   or the scrub pace changes.
 
+## Gallery
+
+`#gallery` is a second sticky scroll container. `main.js` fills its four columns from
+the listing stills and writes one custom property, `--g` (0→1, eased), as it scrolls.
+Every transform is CSS `calc()` off that property, so there is a single style write
+per frame:
+
+- the frame widens from 92vw to full bleed and loses its corner radius
+- the matrix unfurls from `rotateY(-46deg) translateZ(-820px)` to nearly flat
+- each column drifts vertically at its own rate
+
+Two things worth knowing if you touch it:
+
+- The matrix is **absolutely positioned and centred with `translate(-50%, -50%)`**,
+  not grid-centred. It is wider than its container, and Chrome aligns an overflowing
+  grid item to the start — grid centring silently pushes it off to one side.
+- Column heights are driven by `--g` alone. There is no JS per-column maths, so adding
+  a fifth column is a CSS change, not a JS one.
+
+## Imagery
+
+The four listing plates were generated with Higgsfield (`recraft_v4_1`, 4:3, 2k) and
+converted to WebP — living room, kitchen, bedroom, terrace, each written to match the
+video's warm sunset palette (walnut, dark oak, oatmeal linen, burnt orange, amber
+sunset over a harbour skyline). Reuse that description and the same model if you add
+a fifth, or the set stops looking like one building.
+
+| File | Room |
+|---|---|
+| `images/listing-living.webp` | Living room, harbour outlook |
+| `images/listing-kitchen.webp` | Walnut kitchen and island |
+| `images/listing-bedroom.webp` | Primary bedroom at twilight |
+| `images/listing-terrace.webp` | Private terrace, fire bowl |
+
+The rest (`interior`, `terrace`, `skyline`, `aerial`, `poster`) are stills pulled from
+the source video by `make-frames.sh`.
+
 ## Swapping in a different video
 
 ```bash
@@ -85,6 +130,7 @@ Current sequence: 157 frames, 1280px wide, ~8.3 MB total.
 | [main.js](main.js) | Frame loader, canvas scrubber, beat timing, reveals, form |
 | [make-frames.sh](make-frames.sh) | Rebuild `frames/` from a video |
 | `frames/` | The 157-frame sequence |
+| `images/listing-*.webp` | Higgsfield-generated listing plates |
 | `images/` | Poster plus the stills used in cards and the split section |
 
 ## Before it goes live

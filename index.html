@@ -81,19 +81,46 @@
     </section>
   </div>
 
+  <!-- ── Gallery — unfurling 3D matrix ───────────────────────────── -->
+  <section class="gallery" id="gallery" aria-label="Inside the residences">
+    <div class="gallery__sticky">
+      <div class="gallery__frame">
+        <div class="gallery__scene" aria-hidden="true">
+          <div class="gallery__matrix">
+            <div class="gallery__col" data-col="1"></div>
+            <div class="gallery__col" data-col="2"></div>
+            <div class="gallery__col" data-col="3"></div>
+            <div class="gallery__col" data-col="4"></div>
+          </div>
+          <div class="gallery__mask"></div>
+        </div>
+        <div class="gallery__lede">
+          <p class="eyebrow">Inside</p>
+          <h2 class="h2">Every room faces the light.</h2>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ── Residences ──────────────────────────────────────────────── -->
-  <section class="band band--tint" id="residences">
+  <section class="band" id="residences">
     <div class="wrap">
       <header class="sectionHead">
-        <h2 class="h2">Available residences</h2>
+        <div>
+          <p class="eyebrow">Available now</p>
+          <h2 class="h2">Four residences</h2>
+        </div>
         <a class="link" href="#enquire">Request the full list →</a>
       </header>
 
       <div class="grid">
         <article class="card">
-          <div class="card__media"><img src="images/interior.webp" alt="Walnut kitchen island and breakfast stools opening onto the living room and the city beyond." loading="lazy" width="1280" height="720"></div>
+          <div class="card__media">
+            <img src="images/listing-living.webp" alt="Living room with a linen sectional facing floor-to-ceiling glazing over the harbour at sunset." loading="lazy" width="1280" height="960">
+            <span class="card__tag">Available</span>
+          </div>
           <div class="card__body">
-            <p class="card__meta">Residence 41A · Available</p>
+            <p class="card__meta">Residence 41A · West</p>
             <h3 class="card__title">The Corner Living</h3>
             <p class="card__specs">3 bed · 3.5 bath · 2,140 sq ft</p>
             <p class="card__price">$4,250,000</p>
@@ -101,19 +128,38 @@
         </article>
 
         <article class="card">
-          <div class="card__media"><img src="images/terrace.webp" alt="Dining table set beside full-height glazing, with the terrace and harbour behind it." loading="lazy" width="1280" height="720"></div>
+          <div class="card__media">
+            <img src="images/listing-kitchen.webp" alt="Walnut kitchen with a quartzite island and leather stools, city skyline beyond." loading="lazy" width="1280" height="960">
+            <span class="card__tag">Available</span>
+          </div>
           <div class="card__body">
-            <p class="card__meta">Residence 47C · Available</p>
-            <h3 class="card__title">The Terrace</h3>
+            <p class="card__meta">Residence 44B · South-west</p>
+            <h3 class="card__title">The Long Kitchen</h3>
             <p class="card__specs">3 bed · 3 bath · 2,410 sq ft</p>
             <p class="card__price">$5,100,000</p>
           </div>
         </article>
 
         <article class="card">
-          <div class="card__media"><img src="images/skyline.webp" alt="Sunset skyline and harbour seen from the upper floors." loading="lazy" width="1280" height="720"></div>
+          <div class="card__media">
+            <img src="images/listing-bedroom.webp" alt="Primary bedroom at twilight with a walnut platform bed and a window wall over the lit city." loading="lazy" width="1280" height="960">
+            <span class="card__tag">Available</span>
+          </div>
           <div class="card__body">
-            <p class="card__meta">Residence 52 · By appointment</p>
+            <p class="card__meta">Residence 47C · West</p>
+            <h3 class="card__title">The Quiet Floor</h3>
+            <p class="card__specs">3 bed · 3.5 bath · 2,620 sq ft</p>
+            <p class="card__price">$5,900,000</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card__media">
+            <img src="images/listing-terrace.webp" alt="Private terrace with teak loungers and a fire bowl above a glowing harbour skyline." loading="lazy" width="1280" height="960">
+            <span class="card__tag card__tag--quiet">By appointment</span>
+          </div>
+          <div class="card__body">
+            <p class="card__meta">Residence 52 · Full floor</p>
             <h3 class="card__title">The Upper House</h3>
             <p class="card__specs">4 bed · 4.5 bath · 3,880 sq ft</p>
             <p class="card__price">Price on request</p>
@@ -134,6 +180,11 @@
         <h2 class="h2">We show three homes, not thirty.</h2>
         <p>Most of what we represent never reaches a portal. We learn what you actually want — the floor, the light, the hour you get home — and then we show you the two or three places that answer it.</p>
         <p>No open houses. No weekend crowds. One agent, start to close.</p>
+        <ul class="ticks">
+          <li>Off-market access across the harbour front</li>
+          <li>Private viewings, evenings and weekends</li>
+          <li>One agent from first look to completion</li>
+        </ul>
         <a class="link" href="#enquire">Start a conversation →</a>
       </div>
     </div>
@@ -142,6 +193,7 @@
   <!-- ── CTA ─────────────────────────────────────────────────────── -->
   <section class="band cta" id="enquire">
     <div class="wrap cta__inner">
+      <p class="eyebrow">Enquiries</p>
       <h2 class="display cta__title">Book a private viewing</h2>
       <p class="lede">Tell us the floor you have in mind. We'll arrange it for golden hour.</p>
       <form class="form" novalidate>
@@ -166,8 +218,28 @@
 
 <footer class="footer">
   <div class="wrap footer__inner">
-    <a class="nav__brand" href="#top"><span class="nav__mark" aria-hidden="true"></span> Meridian</a>
-    <p class="footer__meta">Meridian Residential · Licensed brokerage · © 2026</p>
+    <div class="footer__brand">
+      <a class="nav__brand" href="#top"><span class="nav__mark" aria-hidden="true"></span> Meridian</a>
+      <p class="footer__blurb">Harbour-front residences, quietly represented.</p>
+    </div>
+    <nav class="footer__nav" aria-label="Footer">
+      <div>
+        <h3>Explore</h3>
+        <a href="#residences">Residences</a>
+        <a href="#building">The Building</a>
+        <a href="#team">How we work</a>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <a href="#enquire">Book a viewing</a>
+        <a href="mailto:hello@meridian.example">hello@meridian.example</a>
+        <a href="tel:+10000000000">+1 (000) 000-0000</a>
+      </div>
+    </nav>
+  </div>
+  <div class="wrap footer__base">
+    <p>Meridian Residential · Licensed brokerage</p>
+    <p>© 2026</p>
   </div>
 </footer>
 
