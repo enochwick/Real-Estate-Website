@@ -93,8 +93,13 @@ string and the easing lives in a CSS transition, so there is no animation librar
   an arriving one fades up at its destination — both use `.fan__card--instant`
   (transition suppressed) plus a forced reflow to set the start state without animating
   into it.
-- Each slot carries its own opacity (`o`), falling from 1 at centre to 0.55 at the
-  edges, so the fan softens outward instead of ending on a hard card.
+- Each slot carries its own `dim` — a black wash painted by `.fan__card::after` —
+  rising from 0 at centre to 0.62 at the edges, so plates get **darker** outward.
+  Opacity stays high (0.9+) so the cards keep their edges instead of going
+  translucent. `.fan::after` then sinks the whole stack into the page left and right.
+- Plates are wide interiors in a portrait card, so only the horizontal crop is ever in
+  play. Each entry in `PLATES` carries a **focal-x** as its third value — that is what
+  keeps the subject in frame, not the aspect ratio.
 - Hovering lifts a card and pushes its neighbours apart. **The reference's 8rem push
   tears this fan in two** — our cards are narrower relative to their spread, so it is
   dialled to 3rem. Retune this if you change card width or the x offsets.
@@ -102,8 +107,11 @@ string and the easing lives in a CSS transition, so there is no animation librar
   the section's `overflow: hidden`, which is intentional.
 - Plate width and the slot x-offsets move together. Widen the cards without pulling the
   offsets in and the fan spreads instead of stacking.
-- Outer plates are ~22% pointer-reachable — the rest is under their neighbours, which is
+- Outer plates are ~20% pointer-reachable — the rest is under their neighbours, which is
   what a tight fan should do. Their exposed edge is the hit area.
+- A rotated plate's bounding box is taller than the plate. `.fan`'s height has to allow
+  for that or `overflow: hidden` shaves the outer corners, and `.fan__layout` is lifted
+  2.5rem because the slots fan downward — without it the stack sits low in its box.
 
 **Residence slider** (`#residences`). Tabs filter by status, the track is CSS
 scroll-snap, dots and arrows drive `scrollTo`, and a scroll listener keeps the dots

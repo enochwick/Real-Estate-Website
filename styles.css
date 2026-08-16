@@ -449,28 +449,44 @@ a { color: inherit; }
    transform, so the easing and timing stay in CSS.
    ────────────────────────────────────────────────────────────────── */
 .fan-band { padding-bottom: clamp(4rem, 8vw, 6rem); }
-.fan-head { text-align: center; margin-bottom: clamp(2.5rem, 5vw, 3.5rem); }
+.fan-head { text-align: center; margin-bottom: clamp(1.75rem, 3.5vw, 2.5rem); }
 .fan-head .h2 { max-width: 20ch; margin-inline: auto; }
 
 .fan {
   position: relative;
-  height: clamp(23rem, 44vw, 34rem);
+  height: clamp(26rem, 45vw, 39rem);
   margin-inline: auto;
   display: grid;
   place-items: center;
   overflow: hidden;
 }
+/* The whole fan sinks into the background at its outer edges, so the stack
+   ends in the page rather than on a cut-off card. */
+.fan::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: linear-gradient(to right,
+    var(--ink) 0%, rgba(11, 9, 8, .55) 9%, transparent 24%,
+    transparent 76%, rgba(11, 9, 8, .55) 91%, var(--ink) 100%);
+}
+
 .fan__layout {
   position: relative;
   display: grid;
   place-items: center;
   width: 100%;
   height: 100%;
+  /* Slots fan downward, so the stack's visual mass sits below the geometric
+     centre. Lift it back so the block reads balanced. */
+  transform: translateY(-2.5rem);
 }
 .fan__card {
   position: absolute;
-  width: clamp(12rem, 22vw, 19rem);
-  aspect-ratio: 3 / 4;
+  width: clamp(12rem, 23vw, 20rem);
+  aspect-ratio: 4 / 5;
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid rgba(244, 239, 232, .14);
@@ -486,6 +502,17 @@ a { color: inherit; }
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* object-position is set per plate in main.js — these are wide interiors
+     and the subject is rarely dead centre. */
+}
+/* Darkens with distance from the centre slot; --dim is written by main.js. */
+.fan__card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 4, 4, var(--dim, 0));
+  transition: background-color .55s var(--ease);
+  pointer-events: none;
 }
 .fan__card--instant { transition: none; }
 

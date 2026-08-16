@@ -175,28 +175,32 @@
   const fanLayout = document.getElementById('fanLayout');
 
   if (fanLayout) {
+    // [src, alt, focal-x] — a portrait card only ever crops horizontally, so
+    // the third value is where the subject actually sits in the wide original.
     const PLATES = [
-      ['images/listing-living.webp',  'Living room facing the harbour'],
-      ['images/listing-kitchen.webp', 'Walnut kitchen and island'],
-      ['images/listing-bedroom.webp', 'Primary bedroom at twilight'],
-      ['images/listing-terrace.webp', 'Private terrace above the city'],
-      ['images/interior.webp',        'Open-plan living at sunset'],
-      ['images/terrace.webp',         'Dining beside the glazing'],
-      ['images/skyline.webp',         'The skyline from the upper floors'],
-      ['images/aerial.webp',          'The street below the tower'],
+      ['images/listing-living.webp',  'Living room facing the harbour',     '38%'],
+      ['images/listing-kitchen.webp', 'Walnut kitchen and island',          '52%'],
+      ['images/listing-bedroom.webp', 'Primary bedroom at twilight',        '42%'],
+      ['images/listing-terrace.webp', 'Private terrace above the city',     '52%'],
+      ['images/interior.webp',        'Open-plan living at sunset',         '58%'],
+      ['images/terrace.webp',         'Dining beside the glazing',          '44%'],
+      ['images/skyline.webp',         'The skyline from the upper floors',  '50%'],
+      ['images/aerial.webp',          'The street below the tower',         '50%'],
     ];
 
     const MAX_VISIBLE = 7;
     const HALF = 3;
     // rot / scale / x(rem) / y(rem) / z-index, centre outwards.
+    // `dim` is a black wash over the plate; `o` stays high so the cards keep
+    // their edges instead of going translucent. Together they darken outward.
     const SLOTS = [
-      { rot: -21, scale: 0.800, x: -18.5, y: 5.4, z: 1,  o: 0.55 },
-      { rot: -14, scale: 0.868, x: -13.5, y: 3.0, z: 2,  o: 0.8 },
-      { rot:  -7, scale: 0.944, x:  -6.8, y: 1.0, z: 3,  o: 0.95 },
-      { rot:   0, scale: 1.000, x:    0,  y: 0.0, z: 10, o: 1 },
-      { rot:   7, scale: 0.944, x:   6.8, y: 1.0, z: 3,  o: 0.95 },
-      { rot:  14, scale: 0.868, x:  13.5, y: 3.0, z: 2,  o: 0.8 },
-      { rot:  21, scale: 0.800, x:  18.5, y: 5.4, z: 1,  o: 0.55 },
+      { rot: -21, scale: 0.800, x: -18.5, y: 5.4, z: 1,  o: 0.9,  dim: 0.62 },
+      { rot: -14, scale: 0.868, x: -13.5, y: 3.0, z: 2,  o: 0.96, dim: 0.38 },
+      { rot:  -7, scale: 0.944, x:  -6.8, y: 1.0, z: 3,  o: 1,    dim: 0.15 },
+      { rot:   0, scale: 1.000, x:    0,  y: 0.0, z: 10, o: 1,    dim: 0 },
+      { rot:   7, scale: 0.944, x:   6.8, y: 1.0, z: 3,  o: 1,    dim: 0.15 },
+      { rot:  14, scale: 0.868, x:  13.5, y: 3.0, z: 2,  o: 0.96, dim: 0.38 },
+      { rot:  21, scale: 0.800, x:  18.5, y: 5.4, z: 1,  o: 0.9,  dim: 0.62 },
     ];
 
     const total = PLATES.length;
@@ -218,10 +222,10 @@
       const centre = total >> 1;
       const d = total > 1 ? (slot - centre) / centre : 0;
       const a = Math.abs(d);
-      return { rot: d * 21, scale: 1 - 0.2 * a * a, x: d * 18.5, y: a * a * 5.4, z: 10 - Math.abs(slot - centre), o: 1 - 0.45 * a * a };
+      return { rot: d * 21, scale: 1 - 0.2 * a * a, x: d * 18.5, y: a * a * 5.4, z: 10 - Math.abs(slot - centre), o: 1 - 0.1 * a * a, dim: 0.62 * a * a };
     };
 
-    const cards = PLATES.map(([src, alt]) => {
+    const cards = PLATES.map(([src, alt, focal]) => {
       const el = document.createElement('div');
       el.className = 'fan__card';
       el.tabIndex = 0;
@@ -232,6 +236,7 @@
       img.alt = alt;
       img.loading = 'lazy';
       img.decoding = 'async';
+      img.style.objectPosition = `${focal} center`;
       el.append(img);
       fanLayout.append(el);
       return el;
@@ -265,6 +270,7 @@
       if (instant) el.classList.add('fan__card--instant');
       el.style.zIndex = t.z;
       el.style.opacity = t.opacity;
+      el.style.setProperty('--dim', t.dim ?? 0);
       el.style.transform =
         `translate(${t.x}rem, ${t.y}rem) rotate(${t.rot}deg) scale(${t.scale})`;
       if (instant) {
@@ -299,7 +305,7 @@
             rot += slot < hovered ? -3 / (d + 1) : 3 / (d + 1);
           }
         }
-        place(cards[i], { x, y, rot, scale, z: base.z, opacity: base.o ?? 1 }, first);
+        place(cards[i], { x, y, rot, scale, z: base.z, opacity: base.o ?? 1, dim: base.dim ?? 0 }, first);
       });
     };
 
@@ -316,7 +322,7 @@
         const base = slotAt(slot);
         place(cards[i], {
           x: base.x * m, y: base.y, rot: base.rot,
-          scale: base.scale * 0.96, z: 0, opacity: 0,
+          scale: base.scale * 0.96, z: 0, opacity: 0, dim: base.dim ?? 0,
         }, false);
       });
       // Arrivals are placed at their destination invisible, then faded up.
@@ -325,7 +331,7 @@
         const base = slotAt(slot);
         place(cards[i], {
           x: base.x * m, y: base.y, rot: base.rot,
-          scale: base.scale * 0.96, z: base.z, opacity: 0,
+          scale: base.scale * 0.96, z: base.z, opacity: 0, dim: base.dim ?? 0,
         }, true);
       });
 
