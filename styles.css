@@ -1,78 +1,104 @@
 /* ── Theme ──────────────────────────────────────────────────────────
-   Warm-neutral token set. `:root` carries the light palette, `.dark` the
-   dark one; the page ships dark (class on <html>), which is what the
+   Warm clay / rose token set. `:root` carries the light palette, `.dark`
+   the dark one; the page ships dark (class on <html>), which is what the
    footage and the editorial run below it are built for.
+
+   One rename from the source: the theme's surface `--muted` is
+   `--muted-surface` here, because the page already used `--muted` for
+   muted *text* (that maps to `--muted-foreground`).
    ────────────────────────────────────────────────────────────────── */
 :root {
-  --card: #fcfcfc;
-  --ring: #644a40;
-  --input: #d8d8d8;
-  --muted-surface: #efefef;
-  --accent: #e8e8e8;
-  --border: #d8d8d8;
-  --radius: 0.5rem;
-  --chart-1: #644a40;
-  --chart-2: #ffdfb5;
-  --chart-3: #e8e8e8;
-  --chart-4: #ffe6c4;
-  --chart-5: #66493e;
-  --popover: #fcfcfc;
-  --primary: #644a40;
-  --sidebar: #fbfbfb;
-  --secondary: #ffdfb5;
-  --background: #f9f9f9;
-  --foreground: #202020;
-  --destructive: #e54d2e;
-  --sidebar-ring: #b5b5b5;
-  --sidebar-accent: #f7f7f7;
-  --sidebar-border: #ebebeb;
-  --card-foreground: #202020;
-  --sidebar-primary: #343434;
-  --muted-foreground: #646464;
-  --accent-foreground: #202020;
-  --popover-foreground: #202020;
-  --primary-foreground: #ffffff;
-  --sidebar-foreground: #252525;
-  --secondary-foreground: #582d1d;
-  --destructive-foreground: #ffffff;
-  --sidebar-accent-foreground: #343434;
-  --sidebar-primary-foreground: #fbfbfb;
+  --card: #F7F5E9;
+  --ring: #A95C64;
+  --input: #946F5C;
+  --muted-surface: #E9C9BE;
+  --accent: #E9C9BE;
+  --border: #946F5C;
+  --radius: 0px;
+  --chart-1: #A95C64;
+  --chart-2: #946F5C;
+  --chart-3: #C9A188;
+  --chart-4: #C3A697;
+  --chart-5: #A87D77;
+  --popover: #FFFFFF;
+  --primary: #A95C64;
+  --sidebar: #EBCABF;
+  --spacing: 0.25rem;
+  --font-mono: Menlo, monospace;
+  --font-sans: "DM Sans", sans-serif;
+  --secondary: #C3A697;
+  --background: #F7F5E9;
+  --font-serif: Georgia, serif;
+  --foreground: #503E33;
+  --destructive: #1F1C18;
+  --shadow-blur: 0px;
+  --shadow-color: #503E33;
+  --sidebar-ring: #A95C64;
+  --shadow-spread: 2px;
+  --letter-spacing: 0em;
+  --shadow-opacity: 1;
+  --sidebar-accent: #C9A188;
+  --sidebar-border: #A87D77;
+  --card-foreground: #503E33;
+  --shadow-offset-x: 2px;
+  --shadow-offset-y: 2px;
+  --sidebar-primary: #A95C64;
+  --muted-foreground: #946F5C;
+  --accent-foreground: #503E33;
+  --popover-foreground: #503E33;
+  --primary-foreground: #FFFFFF;
+  --sidebar-foreground: #503E33;
+  --secondary-foreground: #FFFFFF;
+  --destructive-foreground: #FFFFFF;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-primary-foreground: #FFFFFF;
 }
 
 .dark {
-  --card: #191919;
-  --ring: #ffe0c2;
-  --input: #484848;
-  --muted-surface: #222222;
-  --accent: #2a2a2a;
-  --border: #201e18;
-  --radius: 0.5rem;
-  --chart-1: #ffe0c2;
-  --chart-2: #393028;
-  --chart-3: #2a2a2a;
-  --chart-4: #42382e;
-  --chart-5: #ffe0c1;
-  --popover: #191919;
-  --primary: #ffe0c2;
-  --sidebar: #18181b;
-  --secondary: #393028;
-  --background: #111111;
-  --foreground: #eeeeee;
-  --destructive: #e54d2e;
-  --sidebar-ring: #d4d4d8;
-  --sidebar-accent: #27272a;
-  --sidebar-border: #27272a;
-  --card-foreground: #eeeeee;
-  --sidebar-primary: #1d4ed8;
-  --muted-foreground: #b4b4b4;
-  --accent-foreground: #eeeeee;
-  --popover-foreground: #eeeeee;
-  --primary-foreground: #081a1b;
-  --sidebar-foreground: #f4f4f5;
-  --secondary-foreground: #ffe0c2;
-  --destructive-foreground: #ffffff;
-  --sidebar-accent-foreground: #f4f4f5;
-  --sidebar-primary-foreground: #ffffff;
+  --card: #3C332E;
+  --ring: #C9A188;
+  --input: #503E33;
+  --muted-surface: #503E33;
+  --accent: #C3A697;
+  --border: #503E33;
+  --radius: 0px;
+  --chart-1: #C9A188;
+  --chart-2: #C3A697;
+  --chart-3: #A95C64;
+  --chart-4: #946F5C;
+  --chart-5: #A87D77;
+  --popover: #3C332E;
+  --primary: #C9A188;
+  --sidebar: #1F1A17;
+  --spacing: 0.25rem;
+  --font-mono: Menlo, monospace;
+  --font-sans: "DM Sans", sans-serif;
+  --secondary: #946F5C;
+  --background: #2B2421;
+  --font-serif: Georgia, serif;
+  --foreground: #F7F5E9;
+  --destructive: #E57373;
+  --shadow-blur: 0px;
+  --shadow-color: #503E33;
+  --sidebar-ring: #C9A188;
+  --shadow-spread: 2px;
+  --letter-spacing: 0em;
+  --shadow-opacity: 1;
+  --sidebar-accent: #C3A697;
+  --sidebar-border: #503E33;
+  --card-foreground: #F7F5E9;
+  --shadow-offset-x: 2px;
+  --shadow-offset-y: 2px;
+  --sidebar-primary: #C9A188;
+  --muted-foreground: #C5AA9B;
+  --accent-foreground: #2B2421;
+  --popover-foreground: #F7F5E9;
+  --primary-foreground: #2B2421;
+  --sidebar-foreground: #F7F5E9;
+  --secondary-foreground: #F7F5E9;
+  --destructive-foreground: #2B2421;
+  --sidebar-accent-foreground: #1F1A17;
+  --sidebar-primary-foreground: #1F1A17;
 }
 
 /* ── Site tokens ────────────────────────────────────────────────────
@@ -82,7 +108,9 @@
 :root {
   --ink:        var(--background);   /* page ground */
   --surface:    var(--card);         /* raised band */
-  --surface-2:  var(--accent);       /* cards, inputs */
+  --surface-2:  var(--muted-surface); /* cards, inputs — --accent is a light
+                                        tint in both palettes, so the raised
+                                        surface comes off --muted instead */
   --paper:      var(--foreground);   /* primary text */
   --paper-warm: var(--secondary-foreground);
   --line:       color-mix(in srgb, var(--foreground) 14%, transparent);
@@ -92,7 +120,8 @@
   --ember:      var(--primary);      /* accent */
   --ember-ink:  var(--primary-foreground);
   --ember-lift: color-mix(in srgb, var(--primary) 80%, var(--foreground));
-  --gold:       var(--secondary-foreground);
+  --gold:       var(--chart-2);      /* second accent: eyebrows over the
+                                        footage, progress, form note */
 
   --sp-1: .5rem;  --sp-2: .75rem; --sp-3: 1rem;  --sp-4: 1.5rem;
   --sp-5: 2rem;   --sp-6: 3rem;   --sp-7: 4.5rem; --sp-8: 7rem;
@@ -101,14 +130,18 @@
   --r-sm: calc(var(--radius) * .75);
   --r-md: var(--radius);
   --r-lg: calc(var(--radius) * 2.5);
-  --shadow: 0 26px 70px -28px rgba(0, 0, 0, .85);
+  /* Built from the theme's shadow tokens — flat offset, no blur. */
+  --shadow: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur)
+            var(--shadow-spread)
+            color-mix(in srgb, var(--shadow-color)
+                      calc(var(--shadow-opacity) * 100%), transparent);
   --glow:   0 0 0 1px color-mix(in srgb, var(--foreground) 7%, transparent);
 
   /* Page gutter — the nav sets it and the footer matches it. */
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
 
-  --display: "Fraunces", "Iowan Old Style", Georgia, serif;
-  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --display: "Fraunces", "Iowan Old Style", var(--font-serif);
+  --sans: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   --ease: cubic-bezier(.22, .61, .36, 1);
 }
@@ -122,6 +155,7 @@ body {
   font-family: var(--sans);
   font-size: 16px;
   line-height: 1.6;
+  letter-spacing: var(--letter-spacing);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -572,7 +606,7 @@ a { color: inherit; }
   position: absolute;
   width: clamp(12rem, 23vw, 20rem);
   aspect-ratio: 4 / 5;
-  border-radius: 14px;
+  border-radius: var(--r-lg);
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--foreground) 14%, transparent);
   background: var(--surface-2);
@@ -757,7 +791,7 @@ a { color: inherit; }
 .slide__btn {
   padding: .5rem 1rem;
   border: 0;
-  border-radius: 8px;
+  border-radius: var(--r-md);
   background: var(--ember);
   color: var(--ember-ink);
   font: inherit;
@@ -1146,7 +1180,7 @@ body.is-locked { overflow: hidden; }
   width: 7rem;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: var(--r-md);
   flex-shrink: 0;
 }
 .voice__recBody h3 {
@@ -1261,7 +1295,7 @@ body.is-locked { overflow: hidden; }
   align-items: center;
   gap: .45rem;
   padding: .5rem .9rem;
-  border-radius: 8px;
+  border-radius: var(--r-md);
   border: 1px solid color-mix(in srgb, var(--foreground) 28%, transparent);
   background: color-mix(in srgb, var(--background) 50%, transparent);
   backdrop-filter: blur(8px);
@@ -1328,7 +1362,7 @@ body.is-locked { overflow: hidden; }
 .chat__msg {
   max-width: 92%;
   padding: .75rem .95rem;
-  border-radius: 14px;
+  border-radius: var(--r-lg);
   font-size: .92rem;
   line-height: 1.55;
 }
@@ -1373,7 +1407,7 @@ body.is-locked { overflow: hidden; }
 .chat__sugg {
   text-align: left;
   padding: .55rem .8rem;
-  border-radius: 10px;
+  border-radius: var(--r-md);
   border: 1px solid var(--line-soft);
   background: transparent;
   font: inherit;
