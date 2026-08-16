@@ -1,8 +1,10 @@
 /* Talk to Meridian — voice experience.
  *
- * ── Connecting Retell ───────────────────────────────────────────────
+ * ── Drivers ─────────────────────────────────────────────────────────
  * This module owns the interaction states and the UI. It does not own the
- * transport. Swap the mock for a real call by handing it a driver:
+ * transport. The shipped transport is ElevenLabs Agents, in
+ * ./drivers/elevenlabs.js, wired up in ./meridian-ai.js when an agent id is
+ * present. Below is the mock it falls back to. Any transport can take over:
  *
  *   import { MeridianVoice } from './voice.js';
  *   MeridianVoice.setDriver({
@@ -14,11 +16,11 @@
  *   • call onStatus('listening' | 'thinking' | 'speaking' | 'idle')
  *   • call onTranscript({ role: 'visitor' | 'meridian', text })
  *   • call onResult({ reply, ranked, primary }) when it has recommendations
+ *   • optionally implement toggleMic() for the mic button
  *
- * NEVER put a Retell API key in this file or any other client bundle. The
- * browser should call your own endpoint (e.g. POST /api/retell/web-call),
- * which holds RETELL_API_KEY server-side and returns a short-lived access
- * token for the web call. The driver then uses that token only.
+ * NEVER put a provider API key in this file or any other client bundle. Ship a
+ * public agent id, or fetch a short-lived token from your own endpoint that
+ * holds the key server-side.
  * ──────────────────────────────────────────────────────────────────── */
 
 import { recommend } from './advisor.js';
@@ -89,11 +91,13 @@ export const MeridianVoice = (() => {
     el.root.dataset.status = next;
     const label = {
       idle: '',
+      connecting: 'Connecting…',
       listening: "I'm listening.",
+      muted: 'Muted — tap the mic to talk.',
       thinking: 'Finding the right fit…',
       speaking: '',
     }[next];
-    el.status.textContent = label;
+    if (label !== undefined) el.status.textContent = label;
     el.mic.setAttribute('aria-pressed', String(next === 'listening'));
   }
 
@@ -164,6 +168,8 @@ export const MeridianVoice = (() => {
     onStatus: setStatus,
     onTranscript: addTranscript,
     onResult: renderResult,
+    // Drivers report trouble here; it lands on the status line, in plain words.
+    onError: (message) => { el.status.textContent = message; },
   });
 
   async function submit(text) {
@@ -225,6 +231,9 @@ export const MeridianVoice = (() => {
 
     on(el.form, 'submit', (e) => { e.preventDefault(); submit(el.input.value); });
     on(el.mic, 'click', () => {
+      // With a live call the mic mutes it; without one it toggles the demo state.
+      const next = driver.toggleMic?.();
+      if (next) { setStatus(next); return; }
       setStatus(state.voiceStatus === 'listening' ? 'idle' : 'listening');
       if (state.voiceStatus === 'listening') el.input.focus();
     });

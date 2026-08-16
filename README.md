@@ -183,24 +183,59 @@ window.Meridian.voice.currentRecommendedProperty
 window.Meridian.voice.propertyRecommendations
 ```
 
-### Connecting Retell
+### ElevenLabs (`js/drivers/elevenlabs.js`)
 
-The module owns the UI and the states; it does not own the transport. Hand it a driver:
+The voice is a live [ElevenLabs Agents](https://elevenlabs.io/docs/agents-platform)
+call. The module owns the UI and the states; the driver owns the transport, so the
+overlay — mic, waveform, transcript, residence card — is the same either way.
+
+**Going live takes one line.** Paste a public agent id into `index.html`:
+
+```html
+<meta name="meridian:agent-id" content="agent_…">
+```
+
+Empty means the scripted demo runs instead, so the site is never broken while the
+agent is being set up. The SDK (`@elevenlabs/client`, loaded from esm.sh) is only
+fetched once there is an id to use — no build step, no dependencies to install.
+
+**Agent setup**
+
+1. Create the agent at elevenlabs.io → Agents.
+2. Set it **public** (Agent → Security → authentication off) and add your domain to
+   the allowlist. A public agent id is safe in the browser; an API key never is.
+3. Add these client tools, with exactly these names and parameters:
+
+   | Tool | Parameters | What it does |
+   |---|---|---|
+   | `recommend_residence` | `brief` | Ranks the inventory locally, renders the card |
+   | `show_residence` | `code` | Renders one residence, rejects unknown codes |
+   | `compare_residences` | `code_a`, `code_b` | Two-up comparison |
+   | `schedule_viewing` | `code` | Opens the enquiry form, pre-filled |
+   | `list_residences` | — | The whole inventory as one line |
+
+The handlers run against `js/residences.js` and return a spoken-length summary, so
+the agent talks about real residences and cannot invent one. Check the wiring from
+the console: `Meridian.driver.clientTools.show_residence({ code: '44B' })`.
+
+**Behaviour**
+
+- Microphone permission is requested before connecting, so a blocked mic fails
+  cleanly instead of mid-call.
+- The mic button mutes and unmutes a live call.
+- If the mic is blocked or the line can't be reached, the overlay says so on the
+  status line and typed questions keep working through the local advisor.
+
+**Any other transport** can take over the same way:
 
 ```js
 window.Meridian.voice.setDriver({
-  async start({ onStatus, onTranscript, onResult }) { /* open the web call */ },
-  async submit(text, hooks) { /* optional: typed input */ },
+  async start({ onStatus, onTranscript, onResult, onError }) { /* open the call */ },
+  async submit(text, hooks) { /* typed input */ },
+  toggleMic() { /* optional; return the new status */ },
   async stop() { /* end the call */ },
 });
 ```
-
-A driver calls `onStatus(state)`, `onTranscript({ role, text })`, and `onResult({ reply,
-ranked, primary })`. Nothing else in the UI needs to change.
-
-**The API key never goes in the browser.** Keep `RETELL_API_KEY` server-side, expose an
-endpoint (e.g. `POST /api/retell/web-call`) that mints a short-lived access token, and
-let the driver use only that token.
 
 ### Ask this residence (`js/residence-chat.js`)
 
@@ -237,13 +272,16 @@ may I assist you", no "As an AI".
 | `images/listing-*.webp` | Higgsfield-generated listing plates |
 | [js/residences.js](js/residences.js) | The inventory both AI experiences read from |
 | [js/advisor.js](js/advisor.js) | Matching, comparison, response composition (mock) |
-| [js/voice.js](js/voice.js) | Talk to Meridian + the Retell-ready driver interface |
+| [js/voice.js](js/voice.js) | Talk to Meridian — states, overlay UI, driver interface |
+| [js/drivers/elevenlabs.js](js/drivers/elevenlabs.js) | ElevenLabs Agents driver + the client tools it exposes |
 | [js/residence-chat.js](js/residence-chat.js) | Ask this residence panel |
 | [js/meridian-ai.js](js/meridian-ai.js) | Entry point; wires the viewing hand-off |
 | `images/` | Poster plus the stills used in cards and the split section |
 
 ## Before it goes live
 
+- `<meta name="meridian:agent-id">` is empty — Talk to Meridian runs the scripted
+  demo until a public ElevenLabs agent id is pasted in.
 - The enquiry form is front-end only — it validates and shows a confirmation but
   sends nothing. Point it at Formspree, a Vercel function, or your CRM.
 - Copy, prices, and residence details are placeholders.

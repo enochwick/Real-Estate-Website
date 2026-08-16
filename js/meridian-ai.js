@@ -20,5 +20,19 @@ document.addEventListener('meridian:schedule-viewing', (e) => {
   setTimeout(() => form?.querySelector('[name="name"]')?.focus(), 600);
 });
 
-// Exposed for console checks and for wiring the Retell driver in later.
+/* The voice transport. With an agent id in the page, Talk to Meridian is a
+   real ElevenLabs call; without one it stays the scripted demo, so the site
+   never ships broken. The SDK is only fetched when there is an id to use. */
+const agentId = document
+  .querySelector('meta[name="meridian:agent-id"]')?.content.trim();
+
+if (agentId) {
+  import('./drivers/elevenlabs.js')
+    .then(({ createElevenLabsDriver }) => {
+      MeridianVoice.setDriver(createElevenLabsDriver({ agentId }));
+    })
+    .catch((err) => console.error('[Meridian] voice driver failed to load', err));
+}
+
+// Exposed for console checks.
 window.Meridian = { voice: MeridianVoice, chat: ResidenceChat };

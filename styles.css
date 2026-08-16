@@ -1,104 +1,104 @@
 /* ── Theme ──────────────────────────────────────────────────────────
-   Warm clay / rose token set. `:root` carries the light palette, `.dark`
-   the dark one; the page ships dark (class on <html>), which is what the
-   footage and the editorial run below it are built for.
+   Slate ground, burnt-orange primary, warm off-white type. `:root` carries
+   the light palette, `.dark` the dark one; the page ships dark (class on
+   <html>), which is what the footage and the editorial run are built for.
 
    One rename from the source: the theme's surface `--muted` is
    `--muted-surface` here, because the page already used `--muted` for
    muted *text* (that maps to `--muted-foreground`).
    ────────────────────────────────────────────────────────────────── */
 :root {
-  --card: #F7F5E9;
-  --ring: #A95C64;
-  --input: #946F5C;
-  --muted-surface: #E9C9BE;
-  --accent: #E9C9BE;
-  --border: #946F5C;
-  --radius: 0px;
-  --chart-1: #A95C64;
-  --chart-2: #946F5C;
-  --chart-3: #C9A188;
-  --chart-4: #C3A697;
-  --chart-5: #A87D77;
-  --popover: #FFFFFF;
-  --primary: #A95C64;
-  --sidebar: #EBCABF;
+  --card: hsl(0, 0%, 100%);
+  --ring: hsl(24, 45%, 35%);
+  --input: hsl(210, 10%, 90%);
+  --muted-surface: hsl(210, 10%, 94%);
+  --accent: hsl(145, 25%, 32%);
+  --border: hsl(210, 10%, 85%);
+  --radius: 0.125rem;
+  --chart-1: hsl(24, 45%, 35%);
+  --chart-2: hsl(145, 25%, 32%);
+  --chart-3: hsl(210, 15%, 25%);
+  --chart-4: hsl(35, 30%, 50%);
+  --chart-5: hsl(210, 10%, 60%);
+  --popover: hsl(0, 0%, 100%);
+  --primary: hsl(24, 45%, 35%);
+  --sidebar: hsl(210, 15%, 18%);
   --spacing: 0.25rem;
-  --font-mono: Menlo, monospace;
-  --font-sans: "DM Sans", sans-serif;
-  --secondary: #C3A697;
-  --background: #F7F5E9;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: Inter, -apple-system, sans-serif;
+  --secondary: hsl(210, 15%, 25%);
+  --background: hsl(40, 15%, 98%);
   --font-serif: Georgia, serif;
-  --foreground: #503E33;
-  --destructive: #1F1C18;
-  --shadow-blur: 0px;
-  --shadow-color: #503E33;
-  --sidebar-ring: #A95C64;
-  --shadow-spread: 2px;
-  --letter-spacing: 0em;
-  --shadow-opacity: 1;
-  --sidebar-accent: #C9A188;
-  --sidebar-border: #A87D77;
-  --card-foreground: #503E33;
-  --shadow-offset-x: 2px;
+  --foreground: hsl(210, 25%, 15%);
+  --destructive: hsl(0, 60%, 45%);
+  --shadow-blur: 4px;
+  --shadow-color: rgba(0,0,0,0.1);
+  --sidebar-ring: hsl(24, 45%, 35%);
+  --shadow-spread: 0px;
+  --letter-spacing: -0.01em;
+  --shadow-opacity: 0.1;
+  --sidebar-accent: hsl(210, 15%, 25%);
+  --sidebar-border: hsl(210, 15%, 22%);
+  --card-foreground: hsl(210, 25%, 12%);
+  --shadow-offset-x: 0px;
   --shadow-offset-y: 2px;
-  --sidebar-primary: #A95C64;
-  --muted-foreground: #946F5C;
-  --accent-foreground: #503E33;
-  --popover-foreground: #503E33;
-  --primary-foreground: #FFFFFF;
-  --sidebar-foreground: #503E33;
-  --secondary-foreground: #FFFFFF;
-  --destructive-foreground: #FFFFFF;
-  --sidebar-accent-foreground: #FFFFFF;
-  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-primary: hsl(24, 45%, 35%);
+  --muted-foreground: hsl(210, 10%, 45%);
+  --accent-foreground: hsl(40, 15%, 98%);
+  --popover-foreground: hsl(210, 25%, 12%);
+  --primary-foreground: hsl(40, 15%, 98%);
+  --sidebar-foreground: hsl(40, 15%, 95%);
+  --secondary-foreground: hsl(40, 15%, 98%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --sidebar-accent-foreground: hsl(40, 15%, 95%);
+  --sidebar-primary-foreground: hsl(0, 0%, 100%);
 }
 
 .dark {
-  --card: #3C332E;
-  --ring: #C9A188;
-  --input: #503E33;
-  --muted-surface: #503E33;
-  --accent: #C3A697;
-  --border: #503E33;
-  --radius: 0px;
-  --chart-1: #C9A188;
-  --chart-2: #C3A697;
-  --chart-3: #A95C64;
-  --chart-4: #946F5C;
-  --chart-5: #A87D77;
-  --popover: #3C332E;
-  --primary: #C9A188;
-  --sidebar: #1F1A17;
+  --card: hsl(210, 20%, 12%);
+  --ring: hsl(24, 50%, 45%);
+  --input: hsl(210, 15%, 20%);
+  --muted-surface: hsl(210, 20%, 18%);
+  --accent: hsl(145, 30%, 38%);
+  --border: hsl(210, 15%, 20%);
+  --radius: 0.125rem;
+  --chart-1: hsl(24, 50%, 45%);
+  --chart-2: hsl(145, 30%, 38%);
+  --chart-3: hsl(210, 10%, 60%);
+  --chart-4: hsl(35, 40%, 45%);
+  --chart-5: hsl(210, 15%, 30%);
+  --popover: hsl(210, 20%, 12%);
+  --primary: hsl(24, 50%, 45%);
+  --sidebar: hsl(210, 25%, 8%);
   --spacing: 0.25rem;
-  --font-mono: Menlo, monospace;
-  --font-sans: "DM Sans", sans-serif;
-  --secondary: #946F5C;
-  --background: #2B2421;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: Inter, -apple-system, sans-serif;
+  --secondary: hsl(210, 10%, 25%);
+  --background: hsl(210, 20%, 10%);
   --font-serif: Georgia, serif;
-  --foreground: #F7F5E9;
-  --destructive: #E57373;
-  --shadow-blur: 0px;
-  --shadow-color: #503E33;
-  --sidebar-ring: #C9A188;
-  --shadow-spread: 2px;
-  --letter-spacing: 0em;
-  --shadow-opacity: 1;
-  --sidebar-accent: #C3A697;
-  --sidebar-border: #503E33;
-  --card-foreground: #F7F5E9;
-  --shadow-offset-x: 2px;
-  --shadow-offset-y: 2px;
-  --sidebar-primary: #C9A188;
-  --muted-foreground: #C5AA9B;
-  --accent-foreground: #2B2421;
-  --popover-foreground: #F7F5E9;
-  --primary-foreground: #2B2421;
-  --sidebar-foreground: #F7F5E9;
-  --secondary-foreground: #F7F5E9;
-  --destructive-foreground: #2B2421;
-  --sidebar-accent-foreground: #1F1A17;
-  --sidebar-primary-foreground: #1F1A17;
+  --foreground: hsl(40, 10%, 94%);
+  --destructive: hsl(0, 65%, 55%);
+  --shadow-blur: 8px;
+  --shadow-color: rgba(0,0,0,0.5);
+  --sidebar-ring: hsl(24, 50%, 45%);
+  --shadow-spread: 0px;
+  --letter-spacing: -0.01em;
+  --shadow-opacity: 0.4;
+  --sidebar-accent: hsl(210, 20%, 15%);
+  --sidebar-border: hsl(210, 20%, 14%);
+  --card-foreground: hsl(40, 10%, 94%);
+  --shadow-offset-x: 0px;
+  --shadow-offset-y: 4px;
+  --sidebar-primary: hsl(24, 50%, 45%);
+  --muted-foreground: hsl(210, 10%, 70%);
+  --accent-foreground: hsl(40, 10%, 98%);
+  --popover-foreground: hsl(40, 10%, 94%);
+  --primary-foreground: hsl(40, 10%, 98%);
+  --sidebar-foreground: hsl(210, 10%, 90%);
+  --secondary-foreground: hsl(40, 10%, 94%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --sidebar-accent-foreground: hsl(210, 10%, 90%);
+  --sidebar-primary-foreground: hsl(0, 0%, 100%);
 }
 
 /* ── Site tokens ────────────────────────────────────────────────────
@@ -120,8 +120,10 @@
   --ember:      var(--primary);      /* accent */
   --ember-ink:  var(--primary-foreground);
   --ember-lift: color-mix(in srgb, var(--primary) 80%, var(--foreground));
-  --gold:       var(--chart-2);      /* second accent: eyebrows over the
-                                        footage, progress, form note */
+  --gold:       var(--chart-4);      /* second accent: eyebrows over the
+                                        footage, progress, form note.
+                                        --chart-2 is this theme's green — the
+                                        warm amber reads better on the shot */
 
   --sp-1: .5rem;  --sp-2: .75rem; --sp-3: 1rem;  --sp-4: 1.5rem;
   --sp-5: 2rem;   --sp-6: 3rem;   --sp-7: 4.5rem; --sp-8: 7rem;
@@ -130,11 +132,10 @@
   --r-sm: calc(var(--radius) * .75);
   --r-md: var(--radius);
   --r-lg: calc(var(--radius) * 2.5);
-  /* Built from the theme's shadow tokens — flat offset, no blur. */
+  /* Built from the theme's shadow tokens. --shadow-color already carries
+     its own alpha, so --shadow-opacity is not applied on top of it. */
   --shadow: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur)
-            var(--shadow-spread)
-            color-mix(in srgb, var(--shadow-color)
-                      calc(var(--shadow-opacity) * 100%), transparent);
+            var(--shadow-spread) var(--shadow-color);
   --glow:   0 0 0 1px color-mix(in srgb, var(--foreground) 7%, transparent);
 
   /* Page gutter — the nav sets it and the footer matches it. */
