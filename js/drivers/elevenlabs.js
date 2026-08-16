@@ -43,6 +43,11 @@ const describe = (r) =>
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
+/* v3 voices are prompted with audio tags — "[Personable] Hello…" — and those
+   tags come through in the text transcript. They are direction for the speech
+   engine, not something a visitor should read. */
+const spoken = (text) => String(text).replace(/\[[^\]\n]{1,24}\]\s*/g, '').trim();
+
 export function createElevenLabsDriver({ agentId, sdkUrl = SDK_URL } = {}) {
   let conversation = null;
   let hooks = null;
@@ -108,7 +113,8 @@ export function createElevenLabsDriver({ agentId, sdkUrl = SDK_URL } = {}) {
     onMessage: ({ message, role, source }) => {
       const who = (role ?? source) === 'user' ? 'visitor' : 'meridian';
       if (who === 'visitor' && message === lastSent) { lastSent = null; return; }
-      hooks?.onTranscript({ role: who, text: message });
+      const text = who === 'meridian' ? spoken(message) : message;
+      if (text) hooks?.onTranscript({ role: who, text });
     },
     onError: (message) => {
       hooks?.onError?.(typeof message === 'string' ? message : 'Something went wrong on the line.');

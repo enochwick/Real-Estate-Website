@@ -74,7 +74,7 @@
   --font-mono: "JetBrains Mono", monospace;
   --font-sans: Inter, -apple-system, sans-serif;
   --secondary: hsl(210, 10%, 25%);
-  --background: hsl(210, 20%, 10%);
+  --background: hsl(0, 0%, 0%);
   --font-serif: Georgia, serif;
   --foreground: hsl(40, 10%, 94%);
   --destructive: hsl(0, 65%, 55%);
@@ -99,6 +99,21 @@
   --destructive-foreground: hsl(0, 0%, 100%);
   --sidebar-accent-foreground: hsl(210, 10%, 90%);
   --sidebar-primary-foreground: hsl(0, 0%, 100%);
+}
+
+/* Black ground. The theme's dark palette is a blue slate; the page is asked to
+   read black, so the ground and the surfaces that stack on it are neutralised
+   here — and only here. Hues, accents and type colours are untouched, so the
+   burnt orange still carries the page. Delete this block to get the theme's
+   slate back. */
+.dark {
+  --background: hsl(0, 0%, 0%);    /* page ground */
+  --card: hsl(0, 0%, 7%);          /* raised bands, footer, panels */
+  --popover: hsl(0, 0%, 7%);
+  --muted-surface: hsl(0, 0%, 13%); /* inputs, cards, chat bubbles */
+  --input: hsl(0, 0%, 16%);
+  --border: hsl(0, 0%, 16%);
+  --secondary: hsl(0, 0%, 20%);
 }
 
 /* ── Site tokens ────────────────────────────────────────────────────
