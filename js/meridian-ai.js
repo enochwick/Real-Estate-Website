@@ -36,5 +36,15 @@ if (agentId) {
     .catch((err) => console.error('[Meridian] voice driver failed to load', err));
 }
 
+/* The launcher's orb. Canvas fades in over the CSS blob once the engine
+   loads; if it never loads, the blob is what you see and nothing breaks. */
+const orbCanvas = document.getElementById('talkOrb');
+if (orbCanvas) {
+  import('./orb.js')
+    .then(({ mountOrb }) => mountOrb(orbCanvas, { state: 'listening', dark: true }))
+    .then((orb) => { if (orb) orbCanvas.closest('.talkDock__orb')?.classList.add('is-live'); })
+    .catch(() => { /* CSS blob stands in */ });
+}
+
 // Exposed for console checks.
 window.Meridian = { voice: MeridianVoice, chat: ResidenceChat };

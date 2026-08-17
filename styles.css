@@ -1067,7 +1067,8 @@ a { color: inherit; }
 
 /* ══ Meridian AI ════════════════════════════════════════════════════
    Two experiences, one visual language: the same paper-on-ink palette,
-   the same display face, no gradients, no sparkles, no floating bubble.
+   the same display face, no gradients, no sparkles. The one exception is
+   the corner launcher below, which is deliberate.
    ══════════════════════════════════════════════════════════════════ */
 
 .visually-hidden {
@@ -1083,23 +1084,127 @@ body.is-locked { overflow: hidden; }
 
 .ico { width: 1.05em; height: 1.05em; flex-shrink: 0; }
 
-/* ── Nav entry ──────────────────────────────────────────────────── */
-.nav__talk {
+/* ── Corner launcher ────────────────────────────────────────────
+   A small horizontal card, bottom right, above every layer. The blob is
+   three offset lobes that drift and morph on their own timings — organic
+   rather than a spinner, and it is the page's only idle motion.
+   ────────────────────────────────────────────────────────────────── */
+.talkDock {
+  position: fixed;
+  z-index: 90;
+  right: var(--gutter);
+  bottom: var(--gutter);
   display: inline-flex;
   align-items: center;
-  gap: .5rem;
-  padding: .5rem .25rem;
-  border: 0;
-  background: none;
+  gap: .7rem;
+  padding: .55rem 1rem .55rem .6rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 18px 40px -20px rgba(0, 0, 0, .9);
+  color: var(--paper);
   font: inherit;
-  font-size: .9rem;
-  color: inherit;
-  opacity: .85;
+  text-align: left;
   cursor: pointer;
-  transition: opacity .2s var(--ease);
+  transition: transform .28s var(--ease), border-color .28s var(--ease),
+              background-color .28s var(--ease);
 }
-.nav__talk:hover { opacity: 1; }
-@media (max-width: 900px) { .nav__talk { display: none; } }
+.talkDock:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--primary) 55%, transparent);
+  background: var(--surface);
+}
+.talkDock:active { transform: translateY(0); }
+
+.talkDock__text { display: grid; gap: .1rem; }
+.talkDock__title { font-size: .9rem; font-weight: 500; line-height: 1.2; }
+.talkDock__sub {
+  font-size: .7rem;
+  line-height: 1.2;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ── The blob ────────────────────────────────────────────────────
+   Lobes share a stacking context and blend, so the overlaps read as one
+   soft body instead of three circles.
+   ────────────────────────────────────────────────────────────────── */
+.talkDock__orb {
+  position: relative;
+  display: block;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+}
+/* The engine's canvas, drawn at the 64px preset and sized down here. */
+.talkDock__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity .4s var(--ease);
+}
+.talkDock__orb.is-live .talkDock__canvas { opacity: 1; }
+.talkDock__orb.is-live .talkDock__blob { opacity: 0; }
+
+.talkDock__blob {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border-radius: 50%;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--primary) 16%, transparent);
+  isolation: isolate;
+  transition: opacity .4s var(--ease);
+}
+.talkDock__blob i {
+  position: absolute;
+  inset: 12%;
+  border-radius: 42% 58% 63% 37% / 47% 42% 58% 53%;
+  mix-blend-mode: screen;
+  animation: blobDrift 7s ease-in-out infinite;
+}
+.talkDock__blob i:nth-child(1) {
+  background: var(--primary);
+  animation-duration: 7s;
+}
+.talkDock__blob i:nth-child(2) {
+  background: var(--gold);
+  inset: 22% 8% 8% 22%;
+  animation-duration: 9s;
+  animation-direction: reverse;
+  opacity: .85;
+}
+.talkDock__blob i:nth-child(3) {
+  background: color-mix(in srgb, var(--primary) 55%, var(--foreground));
+  inset: 26%;
+  animation-duration: 11s;
+  animation-delay: -3s;
+  opacity: .6;
+}
+@keyframes blobDrift {
+  0%, 100% { border-radius: 42% 58% 63% 37% / 47% 42% 58% 53%; transform: rotate(0deg) scale(1); }
+  33%      { border-radius: 62% 38% 41% 59% / 58% 63% 37% 42%; transform: rotate(120deg) scale(1.06); }
+  66%      { border-radius: 37% 63% 56% 44% / 39% 51% 49% 61%; transform: rotate(240deg) scale(.96); }
+}
+
+/* Out of the way while the overlay or the chat panel owns the screen. */
+body.is-locked .talkDock,
+.talkDock[hidden] { opacity: 0; pointer-events: none; }
+.talkDock { transition: transform .28s var(--ease), border-color .28s var(--ease),
+                        background-color .28s var(--ease), opacity .2s var(--ease); }
+
+@media (max-width: 560px) {
+  .talkDock { padding: .5rem .85rem .5rem .5rem; gap: .55rem; }
+  .talkDock__sub { display: none; }
+  .talkDock__title { font-size: .85rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .talkDock__blob i { animation: none; }
+  .talkDock:hover { transform: none; }
+}
 
 /* ── Talk to Meridian band ──────────────────────────────────────── */
 .talk { border-top: 1px solid var(--line-soft); }

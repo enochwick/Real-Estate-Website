@@ -159,8 +159,15 @@ Current sequence: 157 frames, 1280px wide, ~8.3 MB total.
 
 ## Meridian AI
 
-Two experiences, built into the page rather than bolted on: no floating bubble, no
-sparkles, no gradients. Both read from one inventory, `js/residences.js`.
+Two experiences, built into the page rather than bolted on: no sparkles, no
+gradients. Both read from one inventory, `js/residences.js`.
+
+Talk to Meridian is launched from a small card fixed in the bottom-right corner
+(`.talkDock`), carrying an animated orb from
+[thinking-orbs](https://orbs.jakubantalik.com). That package ships as a React
+component, but its `./engine` entry is pure canvas geometry with no React in it —
+[js/orb.js](js/orb.js) drives it directly, so the site stays vanilla. A CSS blob
+sits underneath as the fallback if the CDN import fails.
 
 ### Talk to Meridian (`js/voice.js`)
 
@@ -310,6 +317,7 @@ may I assist you", no "As an AI".
 | [js/advisor.js](js/advisor.js) | Matching, comparison, response composition (mock) |
 | [js/voice.js](js/voice.js) | Talk to Meridian — states, overlay UI, driver interface |
 | [js/drivers/elevenlabs.js](js/drivers/elevenlabs.js) | ElevenLabs Agents driver + the client tools it exposes |
+| [js/orb.js](js/orb.js) | Drives the launcher's thinking-orbs canvas without React |
 | [js/residence-chat.js](js/residence-chat.js) | Ask this residence panel |
 | [js/meridian-ai.js](js/meridian-ai.js) | Entry point; wires the viewing hand-off |
 | `images/` | Poster plus the stills used in cards and the split section |
