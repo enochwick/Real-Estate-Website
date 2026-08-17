@@ -150,9 +150,12 @@
   --sp-5: 2rem;   --sp-6: 3rem;   --sp-7: 4.5rem; --sp-8: 7rem;
   --sp-9: 10rem;
 
-  --r-sm: calc(var(--radius) * .75);
-  --r-md: var(--radius);
-  --r-lg: calc(var(--radius) * 2.5);
+  /* The theme ships --radius: 0.125rem, which is effectively square. Cards
+     and inputs here are asked to curve, so the scale is set from one value. */
+  --radius: 0.75rem;
+  --r-sm: calc(var(--radius) * .55);   /* badges, thumbnails */
+  --r-md: var(--radius);               /* inputs, small cards */
+  --r-lg: calc(var(--radius) * 1.8);   /* listings, media, panels */
   /* Built from the theme's shadow tokens. --shadow-color already carries
      its own alpha, so --shadow-opacity is not applied on top of it. */
   --shadow: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur)
@@ -686,12 +689,13 @@ a { color: inherit; }
 .fan__dot.is-active { background: color-mix(in srgb, var(--foreground) 80%, transparent); transform: scale(1.3); }
 
 /* ── Residence slider ───────────────────────────────────────────── */
+/* No panel around the carousel: the residence cards are the objects on the
+   page, and a frame around them only competed with their own edges. */
 .slider {
-  padding: clamp(1.5rem, 3.5vw, 3rem);
-  border-radius: var(--r-lg);
-  border: 1px solid var(--line);
-  background: var(--surface);
-  box-shadow: var(--shadow);
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
 }
 .slider__head {
   display: flex;
