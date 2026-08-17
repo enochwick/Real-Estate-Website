@@ -136,7 +136,7 @@
      rose → violet. Only the launcher uses it. */
   --sunset-1:   var(--primary);
   --sunset-2:   hsl(348, 45%, 46%);
-  --sunset-3:   hsl(285, 32%, 40%);
+  --sunset-3:   hsl(318, 34%, 40%);
 
   --ember:      var(--primary);      /* accent */
   --ember-ink:  var(--primary-foreground);
@@ -1091,33 +1091,52 @@ body.is-locked { overflow: hidden; }
 .ico { width: 1.05em; height: 1.05em; flex-shrink: 0; }
 
 /* ── Corner launcher ────────────────────────────────────────────
-   A small horizontal card, bottom right, above every layer. The blob is
-   three offset lobes that drift and morph on their own timings — organic
-   rather than a spinner, and it is the page's only idle motion.
+   A small horizontal card, bottom right, above every layer, with the sunset
+   sitting *behind* it: a blurred gradient bloom on its own layer, painted
+   before the card in DOM order so it needs no z-index games. The card stays
+   dark glass, so the type keeps its contrast and the colour reads as light
+   spilling out from underneath.
    ────────────────────────────────────────────────────────────────── */
 .talkDock {
   position: fixed;
   z-index: 90;
   right: var(--gutter);
   bottom: var(--gutter);
+  isolation: isolate;
+  transition: opacity .2s var(--ease);
+}
+
+.talkDock__glow {
+  position: absolute;
+  /* Wider than the card and lifted, the way a low sun sits behind a horizon. */
+  inset: -48% -16%;
+  border-radius: 999px;
+  /* Warm-dominant: amber into orange, rose late, only a trace of violet at
+     the very edge. Weighted this way the halo reads as sun rather than pink. */
+  background:
+    linear-gradient(100deg,
+      var(--gold) 0%,
+      var(--sunset-1) 38%,
+      var(--sunset-2) 78%,
+      var(--sunset-3) 100%);
+  filter: blur(20px);
+  opacity: .5;
+  pointer-events: none;
+  transition: opacity .3s var(--ease), transform .3s var(--ease), filter .3s var(--ease);
+}
+
+.talkDock__btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: .7rem;
   padding: .55rem 1rem .55rem .6rem;
-  border: 1px solid color-mix(in srgb, var(--sunset-1) 34%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sunset-1) 30%, transparent);
   border-radius: 999px;
-  /* Sunset wash over the card surface, not a raw gradient — the surface keeps
-     it dark enough for the type, the ramp gives it the sky. */
-  background:
-    linear-gradient(102deg,
-      color-mix(in srgb, var(--sunset-1) 34%, var(--surface)) 0%,
-      color-mix(in srgb, var(--sunset-2) 26%, var(--surface)) 55%,
-      color-mix(in srgb, var(--sunset-3) 22%, var(--surface)) 100%);
+  background: color-mix(in srgb, var(--surface) 86%, transparent);
   backdrop-filter: blur(16px) saturate(140%);
-  /* Depth underneath, plus a warm bloom the colour actually casts. */
   box-shadow:
-    0 22px 45px -18px color-mix(in srgb, var(--sunset-1) 50%, transparent),
-    0 10px 24px -12px rgba(0, 0, 0, .85),
+    0 10px 24px -12px rgba(0, 0, 0, .9),
     inset 0 1px 0 color-mix(in srgb, var(--foreground) 12%, transparent);
   color: var(--paper);
   font: inherit;
@@ -1126,20 +1145,19 @@ body.is-locked { overflow: hidden; }
   transition: transform .28s var(--ease), border-color .28s var(--ease),
               background-color .28s var(--ease);
 }
-.talkDock:hover {
+
+/* Hover lifts the card and pushes the sun further out behind it. */
+.talkDock:hover .talkDock__btn {
   transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--sunset-1) 62%, transparent);
-  background:
-    linear-gradient(102deg,
-      color-mix(in srgb, var(--sunset-1) 46%, var(--surface)) 0%,
-      color-mix(in srgb, var(--sunset-2) 36%, var(--surface)) 55%,
-      color-mix(in srgb, var(--sunset-3) 30%, var(--surface)) 100%);
-  box-shadow:
-    0 26px 55px -18px color-mix(in srgb, var(--sunset-1) 62%, transparent),
-    0 10px 24px -12px rgba(0, 0, 0, .85),
-    inset 0 1px 0 color-mix(in srgb, var(--foreground) 16%, transparent);
+  border-color: color-mix(in srgb, var(--sunset-1) 55%, transparent);
 }
-.talkDock:active { transform: translateY(0); }
+.talkDock:hover .talkDock__glow {
+  opacity: .8;
+  transform: scale(1.06);
+  filter: blur(26px);
+}
+.talkDock__btn:active { transform: translateY(0); }
+.talkDock__btn:focus-visible { outline: 2px solid var(--sunset-1); outline-offset: 4px; }
 
 .talkDock__text { display: grid; gap: .1rem; }
 .talkDock__title { font-size: .9rem; font-weight: 500; line-height: 1.2; }
@@ -1220,17 +1238,16 @@ body.is-locked { overflow: hidden; }
 /* Out of the way while the overlay or the chat panel owns the screen. */
 body.is-locked .talkDock,
 .talkDock[hidden] { opacity: 0; pointer-events: none; }
-.talkDock { transition: transform .28s var(--ease), border-color .28s var(--ease),
-                        background-color .28s var(--ease), opacity .2s var(--ease); }
 
 @media (max-width: 560px) {
-  .talkDock { padding: .5rem .85rem .5rem .5rem; gap: .55rem; }
+  .talkDock__btn { padding: .5rem .85rem .5rem .5rem; gap: .55rem; }
   .talkDock__sub { display: none; }
   .talkDock__title { font-size: .85rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .talkDock__blob i { animation: none; }
-  .talkDock:hover { transform: none; }
+  .talkDock:hover .talkDock__btn { transform: none; }
+  .talkDock:hover .talkDock__glow { transform: none; }
 }
 
 /* ── Talk to Meridian band ──────────────────────────────────────── */
