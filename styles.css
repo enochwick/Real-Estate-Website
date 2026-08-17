@@ -1109,7 +1109,7 @@ body.is-locked { overflow: hidden; }
 .talkDock__glow {
   position: absolute;
   /* Wider than the card and lifted, the way a low sun sits behind a horizon. */
-  inset: -48% -16%;
+  inset: -34% -10%;
   border-radius: 999px;
   /* Warm-dominant: amber into orange, rose late, only a trace of violet at
      the very edge. Weighted this way the halo reads as sun rather than pink. */
@@ -1119,8 +1119,9 @@ body.is-locked { overflow: hidden; }
       var(--sunset-1) 38%,
       var(--sunset-2) 78%,
       var(--sunset-3) 100%);
-  filter: blur(20px);
-  opacity: .5;
+  /* Softer and further back: a hint of warmth around the card, not a lamp. */
+  filter: blur(26px);
+  opacity: .28;
   pointer-events: none;
   transition: opacity .3s var(--ease), transform .3s var(--ease), filter .3s var(--ease);
 }
@@ -1131,7 +1132,7 @@ body.is-locked { overflow: hidden; }
   align-items: center;
   gap: .7rem;
   padding: .55rem 1rem .55rem .6rem;
-  border: 1px solid color-mix(in srgb, var(--sunset-1) 30%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sunset-1) 22%, transparent);
   border-radius: 999px;
   background: color-mix(in srgb, var(--surface) 86%, transparent);
   backdrop-filter: blur(16px) saturate(140%);
@@ -1149,12 +1150,12 @@ body.is-locked { overflow: hidden; }
 /* Hover lifts the card and pushes the sun further out behind it. */
 .talkDock:hover .talkDock__btn {
   transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--sunset-1) 55%, transparent);
+  border-color: color-mix(in srgb, var(--sunset-1) 40%, transparent);
 }
 .talkDock:hover .talkDock__glow {
-  opacity: .8;
-  transform: scale(1.06);
-  filter: blur(26px);
+  opacity: .45;
+  transform: scale(1.05);
+  filter: blur(30px);
 }
 .talkDock__btn:active { transform: translateY(0); }
 .talkDock__btn:focus-visible { outline: 2px solid var(--sunset-1); outline-offset: 4px; }
