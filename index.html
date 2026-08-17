@@ -365,16 +365,19 @@
      thing on the page once the stage is behind you, so it reads as the
      one live element rather than decoration.
 ──────────────────────────────────────────────────────────────────── -->
-<button class="talkDock" type="button" data-voice="open" aria-label="Talk to Meridian">
-  <span class="talkDock__orb" aria-hidden="true">
-    <span class="talkDock__blob"><i></i><i></i><i></i></span>
-    <canvas class="talkDock__canvas" id="talkOrb" width="64" height="64"></canvas>
-  </span>
-  <span class="talkDock__text">
-    <span class="talkDock__title">Talk to Meridian</span>
-    <span class="talkDock__sub">Ask about any residence</span>
-  </span>
-</button>
+<div class="talkDock">
+  <span class="talkDock__glow" aria-hidden="true"></span>
+  <button class="talkDock__btn" type="button" data-voice="open" aria-label="Talk to Meridian">
+    <span class="talkDock__orb" aria-hidden="true">
+      <span class="talkDock__blob"><i></i><i></i><i></i></span>
+      <canvas class="talkDock__canvas" id="talkOrb" width="64" height="64"></canvas>
+    </span>
+    <span class="talkDock__text">
+      <span class="talkDock__title">Talk to Meridian</span>
+      <span class="talkDock__sub">Ask about any residence</span>
+    </span>
+  </button>
+</div>
 
 <script src="main.js"></script>
 <script type="module" src="js/meridian-ai.js"></script>
