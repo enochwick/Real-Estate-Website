@@ -149,7 +149,12 @@ FIRST_MESSAGE = (
 )
 
 
+VERBOSE = False
+
+
 def request(method, path, key, body=None):
+    if VERBOSE:
+        print(f"  → {method} {path}")
     req = urllib.request.Request(
         API + path,
         method=method,
@@ -162,6 +167,8 @@ def request(method, path, key, body=None):
     try:
         with urllib.request.urlopen(req) as res:
             raw = res.read().decode()
+            if VERBOSE:
+                print(f"    {res.status} {raw[:160]}")
             return json.loads(raw) if raw else {}
     except urllib.error.HTTPError as e:
         detail = e.read().decode()[:500]
@@ -191,7 +198,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--agent-id", default=agent_id_from_index())
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--verbose", action="store_true",
+                    help="print every request and its status")
+    ap.add_argument("--check", action="store_true",
+                    help="read the agent back and report what is actually configured")
     args = ap.parse_args()
+
+    global VERBOSE
+    VERBOSE = args.verbose
 
     key = os.environ.get("ELEVENLABS_API_KEY")
     if not key:
@@ -200,6 +214,32 @@ def main():
         sys.exit("No agent id — pass --agent-id, or fill in the meta tag in index.html.")
 
     prompt = open(os.path.join(HERE, "agent-prompt.md")).read().strip()
+
+    if args.check:
+        agent = request("GET", f"/convai/agents/{args.agent_id}", key)
+        cfg = agent.get("conversation_config", {}).get("agent", {})
+        attached = cfg.get("prompt", {}).get("tool_ids", []) or []
+        first = cfg.get("first_message", "")
+        live_prompt = cfg.get("prompt", {}).get("prompt", "") or ""
+
+        names = []
+        listing = request("GET", "/convai/tools", key)
+        entries = listing.get("tools", listing) if isinstance(listing, dict) else listing
+        for entry in entries or []:
+            tid, name = tool_identity(entry)
+            if tid in attached:
+                names.append(name)
+
+        print(f"agent         : {args.agent_id}")
+        print(f"first message : {first[:90] or '(none)'}")
+        print(f"prompt        : {live_prompt[:90] or '(none)'}…")
+        print(f"tools attached: {len(attached)}")
+        for n in names:
+            print(f"                {n}")
+        missing = [t["name"] for t in TOOLS if t["name"] not in names]
+        print(f"missing       : {', '.join(missing) if missing else 'none — all five attached'}")
+        print(f"prompt is ours: {live_prompt.strip() == prompt}")
+        return
 
     if args.dry_run:
         print(f"agent      : {args.agent_id}")
@@ -233,15 +273,25 @@ def main():
             print(f"created  {name}  ({tid})")
         tool_ids.append(tid)
 
-    # ── Agent: merge with whatever is already attached ────────────────
+    # ── Agent ─────────────────────────────────────────────────────────
+    # Read the existing prompt object and edit two keys inside it, rather than
+    # sending a fresh one. The prompt object also carries the llm choice,
+    # temperature and knowledge base; posting a bare {prompt, tool_ids} risks
+    # dropping them, and the knowledge base is currently how this agent knows
+    # the inventory at all.
     agent = request("GET", f"/convai/agents/{args.agent_id}", key)
-    current = (
-        agent.get("conversation_config", {})
-        .get("agent", {})
-        .get("prompt", {})
-        .get("tool_ids", [])
-    ) or []
+    prompt_obj = dict(
+        agent.get("conversation_config", {}).get("agent", {}).get("prompt", {}) or {}
+    )
+    current = prompt_obj.get("tool_ids") or []
     merged = list(dict.fromkeys([*current, *tool_ids]))
+
+    if VERBOSE:
+        keys = ", ".join(sorted(prompt_obj)) or "(empty)"
+        print(f"  existing prompt keys preserved: {keys}")
+
+    prompt_obj["prompt"] = prompt
+    prompt_obj["tool_ids"] = merged
 
     request(
         "PATCH",
@@ -250,14 +300,39 @@ def main():
         {
             "conversation_config": {
                 "agent": {
-                    "prompt": {"prompt": prompt, "tool_ids": merged},
+                    "prompt": prompt_obj,
                     "first_message": FIRST_MESSAGE,
                 }
             }
         },
     )
-    print(f"\nagent updated — prompt, first message, {len(merged)} tool(s) attached.")
-    print("Open the site and try: “Something high up with sunset views.”")
+    # Don't take the PATCH on trust — read the agent back and prove it landed.
+    after = request("GET", f"/convai/agents/{args.agent_id}", key)
+    cfg = after.get("conversation_config", {}).get("agent", {})
+    live_tools = cfg.get("prompt", {}).get("tool_ids", []) or []
+    live_first = (cfg.get("first_message") or "").strip()
+    live_prompt = (cfg.get("prompt", {}).get("prompt") or "").strip()
+
+    ok_tools = all(t in live_tools for t in tool_ids)
+    ok_first = live_first == FIRST_MESSAGE.strip()
+    ok_prompt = live_prompt == prompt
+
+    print()
+    print(f"[{'ok ' if ok_tools else 'FAIL'}] {len(tool_ids)} tool(s) attached to the agent")
+    print(f"[{'ok ' if ok_first else 'FAIL'}] first message")
+    print(f"[{'ok ' if ok_prompt else 'FAIL'}] system prompt")
+
+    if ok_tools and ok_first and ok_prompt:
+        print("\nAgent configured. Open the site and try:")
+        print("  “Something high up with sunset views.”")
+        print("A residence card should appear in the overlay.")
+    else:
+        print("\nThe PATCH did not fully take. What came back:")
+        print(f"  first message : {live_first[:100] or '(empty)'}")
+        print(f"  prompt starts : {live_prompt[:100] or '(empty)'}")
+        print(f"  tool_ids      : {live_tools}")
+        print("\nRe-run with --verbose and send that output.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
