@@ -132,6 +132,12 @@
   --line-soft:  color-mix(in srgb, var(--foreground) 7%, transparent);
   --muted:      var(--muted-foreground);
 
+  /* Sunset ramp, pulled off the footage: the sky in the hero runs orange →
+     rose → violet. Only the launcher uses it. */
+  --sunset-1:   var(--primary);
+  --sunset-2:   hsl(348, 45%, 46%);
+  --sunset-3:   hsl(285, 32%, 40%);
+
   --ember:      var(--primary);      /* accent */
   --ember-ink:  var(--primary-foreground);
   --ember-lift: color-mix(in srgb, var(--primary) 80%, var(--foreground));
@@ -1098,11 +1104,21 @@ body.is-locked { overflow: hidden; }
   align-items: center;
   gap: .7rem;
   padding: .55rem 1rem .55rem .6rem;
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, var(--sunset-1) 34%, transparent);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  /* Sunset wash over the card surface, not a raw gradient — the surface keeps
+     it dark enough for the type, the ramp gives it the sky. */
+  background:
+    linear-gradient(102deg,
+      color-mix(in srgb, var(--sunset-1) 34%, var(--surface)) 0%,
+      color-mix(in srgb, var(--sunset-2) 26%, var(--surface)) 55%,
+      color-mix(in srgb, var(--sunset-3) 22%, var(--surface)) 100%);
   backdrop-filter: blur(16px) saturate(140%);
-  box-shadow: 0 18px 40px -20px rgba(0, 0, 0, .9);
+  /* Depth underneath, plus a warm bloom the colour actually casts. */
+  box-shadow:
+    0 22px 45px -18px color-mix(in srgb, var(--sunset-1) 50%, transparent),
+    0 10px 24px -12px rgba(0, 0, 0, .85),
+    inset 0 1px 0 color-mix(in srgb, var(--foreground) 12%, transparent);
   color: var(--paper);
   font: inherit;
   text-align: left;
@@ -1112,8 +1128,16 @@ body.is-locked { overflow: hidden; }
 }
 .talkDock:hover {
   transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--primary) 55%, transparent);
-  background: var(--surface);
+  border-color: color-mix(in srgb, var(--sunset-1) 62%, transparent);
+  background:
+    linear-gradient(102deg,
+      color-mix(in srgb, var(--sunset-1) 46%, var(--surface)) 0%,
+      color-mix(in srgb, var(--sunset-2) 36%, var(--surface)) 55%,
+      color-mix(in srgb, var(--sunset-3) 30%, var(--surface)) 100%);
+  box-shadow:
+    0 26px 55px -18px color-mix(in srgb, var(--sunset-1) 62%, transparent),
+    0 10px 24px -12px rgba(0, 0, 0, .85),
+    inset 0 1px 0 color-mix(in srgb, var(--foreground) 16%, transparent);
 }
 .talkDock:active { transform: translateY(0); }
 
@@ -1122,7 +1146,8 @@ body.is-locked { overflow: hidden; }
 .talkDock__sub {
   font-size: .7rem;
   line-height: 1.2;
-  color: var(--muted);
+  /* Warm, not the page's cool grey — it sits on a lit surface now. */
+  color: color-mix(in srgb, var(--foreground) 68%, transparent);
   white-space: nowrap;
 }
 
@@ -1155,7 +1180,9 @@ body.is-locked { overflow: hidden; }
   display: block;
   border-radius: 50%;
   overflow: hidden;
-  background: color-mix(in srgb, var(--primary) 16%, transparent);
+  background: linear-gradient(140deg,
+    color-mix(in srgb, var(--sunset-1) 30%, transparent),
+    color-mix(in srgb, var(--sunset-3) 24%, transparent));
   isolation: isolate;
   transition: opacity .4s var(--ease);
 }
