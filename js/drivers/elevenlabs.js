@@ -98,7 +98,10 @@ export function createElevenLabsDriver({ agentId, sdkUrl = SDK_URL } = {}) {
         : 'The enquiry form is open on screen. Ask them to add a name and email.';
     },
 
-    list_residences: () => RESIDENCES.map(describe).join(' | '),
+    list_residences: () => {
+      hooks?.onList?.(RESIDENCES);
+      return RESIDENCES.map(describe).join(' | ');
+    },
   };
 
   /* ── Session callbacks → the overlay's four states ─────────────── */

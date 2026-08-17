@@ -164,10 +164,41 @@ export const MeridianVoice = (() => {
     });
   }
 
+  /* The whole collection, when the agent says it is pulling up a list. Rows
+     are clickable — tapping one swaps this out for that residence's card. */
+  function renderList(residences) {
+    el.result.innerHTML = '';
+    if (!residences?.length) return;
+
+    state.propertyRecommendations = residences;
+
+    const list = document.createElement('ul');
+    list.className = 'voice__list';
+    residences.forEach((r) => {
+      const row = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'voice__listRow';
+      btn.innerHTML = `
+        <img src="${r.image}" alt="" loading="lazy">
+        <span class="voice__listBody">
+          <span class="voice__listName">${r.code} · ${r.name}</span>
+          <span class="voice__listSpec">Floor ${r.floor} · ${r.aspect} · ${r.beds} bed · ${sqftLabel(r)}</span>
+        </span>
+        <span class="voice__listPrice">${r.price ? shortPrice(r) : 'On request'}</span>`;
+      btn.addEventListener('click', () => renderResult({ ranked: [r], primary: r }));
+      row.append(btn);
+      list.append(row);
+    });
+    el.result.append(list);
+    el.intro.hidden = true;
+  }
+
   const hooks = () => ({
     onStatus: setStatus,
     onTranscript: addTranscript,
     onResult: renderResult,
+    onList: renderList,
     // Drivers report trouble here; it lands on the status line, in plain words.
     onError: (message) => { el.status.textContent = message; },
   });

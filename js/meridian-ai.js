@@ -29,7 +29,9 @@ const agentId = document
 if (agentId) {
   import('./drivers/elevenlabs.js')
     .then(({ createElevenLabsDriver }) => {
-      MeridianVoice.setDriver(createElevenLabsDriver({ agentId }));
+      const driver = createElevenLabsDriver({ agentId });
+      MeridianVoice.setDriver(driver);
+      window.Meridian.driver = driver;
     })
     .catch((err) => console.error('[Meridian] voice driver failed to load', err));
 }
