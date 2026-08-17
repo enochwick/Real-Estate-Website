@@ -218,8 +218,23 @@ The handlers run against `js/residences.js` and return a spoken-length summary, 
 the agent talks about real residences and cannot invent one. Check the wiring from
 the console: `Meridian.driver.clientTools.show_residence({ code: '44B' })`.
 
+**Or do steps 3–4 in one command.** `configure-agent.py` registers all five tools
+and the prompt over the API:
+
+```bash
+export ELEVENLABS_API_KEY=...            # never commit this
+python3 configure-agent.py --dry-run     # show what would change
+python3 configure-agent.py               # apply it
+```
+
+It reads the agent id from the meta tag, the prompt from `agent-prompt.md`, and the
+key from your environment — nothing is written back to the repo. Re-running is safe:
+tools are matched by name and updated in place rather than duplicated, and any tool
+ids already attached to the agent are kept.
+
 **Agent prompt.** The agent's own prompt decides who it is; the tools only decide
-what it knows. A starting point that matches the tone rules in `js/advisor.js`:
+what it knows. The full text lives in [agent-prompt.md](agent-prompt.md) — edit it
+there and re-run the script. In short:
 
 > You are Meridian — the voice of a small brokerage representing twelve
 > harbour-facing residences in one tower. The visitor is on the Meridian website
@@ -287,6 +302,8 @@ may I assist you", no "As an AI".
 | [styles.css](styles.css) | Design tokens and all layout |
 | [main.js](main.js) | Frame loader, canvas scrubber, beat timing, reveals, form |
 | [make-frames.sh](make-frames.sh) | Rebuild `frames/` from a video |
+| [configure-agent.py](configure-agent.py) | Registers the client tools and prompt on the ElevenLabs agent |
+| [agent-prompt.md](agent-prompt.md) | The agent's system prompt, in plain text |
 | `frames/` | The 157-frame sequence |
 | `images/listing-*.webp` | Higgsfield-generated listing plates |
 | [js/residences.js](js/residences.js) | The inventory both AI experiences read from |
@@ -299,8 +316,8 @@ may I assist you", no "As an AI".
 
 ## Before it goes live
 
-- `<meta name="meridian:agent-id">` is empty — Talk to Meridian runs the scripted
-  demo until a public ElevenLabs agent id is pasted in.
+- The ElevenLabs agent needs its tools and prompt registered before the residence
+  cards appear on a call — run `configure-agent.py` once.
 - The enquiry form is front-end only — it validates and shows a confirmation but
   sends nothing. Point it at Formspree, a Vercel function, or your CRM.
 - Copy, prices, and residence details are placeholders.
