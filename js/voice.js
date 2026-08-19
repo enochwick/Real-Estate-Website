@@ -79,8 +79,6 @@ export const MeridianVoice = (() => {
     el.prompts   = document.getElementById('voicePrompts');
     el.log       = document.getElementById('voiceLog');
     el.result    = document.getElementById('voiceResult');
-    el.form      = document.getElementById('voiceForm');
-    el.input     = document.getElementById('voiceInput');
     el.mic       = document.getElementById('voiceMic');
     el.intro     = document.getElementById('voiceIntro');
     return !!el.root;
@@ -153,7 +151,6 @@ export const MeridianVoice = (() => {
     actions.querySelector('[data-act="keep"]')?.addEventListener('click', () => {
       el.result.innerHTML = '';
       setStatus('listening');
-      el.input.focus();
     });
     actions.querySelector('[data-act="compare"]')?.addEventListener('click', () => {
       submit(`Compare ${primary.code} with ${second.code}`);
@@ -206,7 +203,6 @@ export const MeridianVoice = (() => {
   async function submit(text) {
     const clean = String(text).trim();
     if (!clean || state.voiceStatus === 'thinking') return;
-    el.input.value = '';
     el.result.innerHTML = '';
     await driver.submit?.(clean, hooks());
   }
@@ -219,7 +215,6 @@ export const MeridianVoice = (() => {
     el.root.hidden = false;
     document.body.classList.add('is-locked');
     await driver.start(hooks());
-    el.input.focus();
   }
 
   async function endVoiceConversation() {
@@ -260,13 +255,11 @@ export const MeridianVoice = (() => {
     el.wave.innerHTML = Array.from({ length: 8 }, (_, i) =>
       `<i style="--i:${i}"></i>`).join('');
 
-    on(el.form, 'submit', (e) => { e.preventDefault(); submit(el.input.value); });
     on(el.mic, 'click', () => {
       // With a live call the mic mutes it; without one it toggles the demo state.
       const next = driver.toggleMic?.();
       if (next) { setStatus(next); return; }
       setStatus(state.voiceStatus === 'listening' ? 'idle' : 'listening');
-      if (state.voiceStatus === 'listening') el.input.focus();
     });
     on(el.root, 'click', (e) => { if (e.target === el.root) close(); });
     el.root.querySelectorAll('[data-voice="close"]').forEach((b) => on(b, 'click', close));

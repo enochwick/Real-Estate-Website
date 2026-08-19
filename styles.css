@@ -1508,20 +1508,6 @@ body.is-locked .talkDock,
 }
 .voice[data-status="thinking"] .voice__status { color: var(--gold); }
 
-.voice__form { display: flex; gap: .6rem; width: min(30rem, 100%); }
-.voice__form input {
-  flex: 1;
-  font: inherit;
-  font-size: .92rem;
-  color: var(--paper);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--r-md);
-  padding: .7rem .95rem;
-}
-.voice__form input::placeholder { color: color-mix(in srgb, var(--foreground) 30%, transparent); }
-.voice__form input:focus { outline: none; border-color: var(--ember); }
-
 @media (max-width: 640px) {
   .voice__stage { gap: var(--sp-4); }
   .voice__rec { flex-direction: column; align-items: flex-start; }
